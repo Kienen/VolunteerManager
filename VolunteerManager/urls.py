@@ -1,6 +1,9 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from registration.backends import simple
+from Volunteer import views
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required 
 
 urlpatterns = patterns('',
     # Examples:
@@ -8,17 +11,18 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^accounts/', include('simple.urls')),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
 #   url(r'^users/*$, 
     
  
-#    url(r'^signup/', views.CreateVolunteer.as_view()),
+#    url(r'^user/create', views.CreateVolunteer.as_view()),
 #    url(r'^update/', login_required(views.UpdateVolunteer.as_view()), name="volunteer_update_form.html"),
     url(r'^login/$', 'django.contrib.auth.views.login'),
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout'),
-    url(r'^home/$', views.home),
+#    url(r'^home/$', views.home),
 #    url(r'^moo/$', views.moo),
+    url(r'^yah$', login_required(views.yah)),
 
     
     #Password setting urls with built-in templates

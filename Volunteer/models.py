@@ -23,7 +23,7 @@ class Volunteer(models.Model):
         (VEGETARIAN, 'Vegetarian - I don\'t eat any meat'),
         (VEGAN, 'Vegan - I don\t eat any animal products!'),
     )
-    user = models.ForeignKey(User, unique=True, related_name="profile")
+    user = models.OneToOneField(User, related_name="profile")
     
     #User input fields
     #username = user.username
@@ -46,7 +46,7 @@ class Volunteer(models.Model):
     vexp_other = models.CharField('If YES, please specify.', max_length=254, null = True)
     super_powers = models.CharField('Super Powers', max_length=254, null = True, help_text = "What special super powers or skills you have? What skills would you like to learn more about?")
     jokes = models.CharField('Questions? Comments? Favorite Joke?', max_length=254, null = True, help_text="How do you kill a circus? Go for the juggler.")
-    PUBLIC_FIELD_NAMES = ['username', 'email', 'first_name', 'last_name', 'playa_name', 'birthdate', 'phone', 'emergency_contact', 'emergency_phone'
+    PUBLIC_FIELD_NAMES = [ 'playa_name', 'birthdate', 'phone', 'emergency_contact', 'emergency_phone',
         'FB_user_name', 'diet', 'diet_restriction', 'disability', 'attended_BM', 'v_YOUtopia', 'vexp_YOUtopia', 'super_powers', 'jokes']
 
     #These fields are for administrative use.
