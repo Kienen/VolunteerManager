@@ -42,7 +42,7 @@ def volunteer_create(request):
             # process the data in form.cleaned_data as required
             profile =  form.save(commit=False)
             profile.user = request.user
-            profile.save
+            profile.save()
             # redirect to a new URL:
             return redirect('/home/')
  #           return HttpResponse('Success! We will contact you after performing complex calculation, please join us in the YOUtopia Volunteers Facebook group!')
