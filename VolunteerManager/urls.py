@@ -18,11 +18,13 @@ urlpatterns = patterns('',
 #    url(r'^user/create', views.CreateVolunteer.as_view()),
 #    url(r'^update/', login_required(views.UpdateVolunteer.as_view()), name="volunteer_update_form.html"),
     url(r'^login/$', 'django.contrib.auth.views.login'),
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
+#    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout'),
-#    url(r'^home/$', views.home),
+    url(r'^home/$', login_required(views.home)),
 #    url(r'^moo/$', views.moo),
-    url(r'^yah$', login_required(views.yah)),
+
+#Profiles
+    url(r'^profile$', login_required(views.volunteer_create)),
 
     
     #Password setting urls with built-in templates

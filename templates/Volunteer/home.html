@@ -1,13 +1,11 @@
 {% load staticfiles %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />
-{% if volunteer %}
-	info = volunteer.volunteer_info
+
     <ul>
-    {% for field_name, value in info %}
-        <li> {{field_name }} {{value}}</li>
+    {% for field_name in volunteer %}
+        <li> {{field_name }} </li>
     {% endfor %}
     </ul>
-{% else %}
-    <p><a href="/login/">Please Login</a></p>
+
 {% endif %}
