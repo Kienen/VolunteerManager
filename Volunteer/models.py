@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 #Team describes a Department
 class Team(models.Model):
-    # Number of team members
+    #Budget =  Number of team members allowed
     budget = models.PositiveSmallIntegerField()
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=254)
@@ -12,7 +12,7 @@ class Team(models.Model):
     def __str__(self):
         return name
 
-#The Volunteer class contains basic information about the Volunteer. Linked to the user.     
+#The Volunteer class contains basic information about the Volunteer. OneToOneField relationship to the user.     
 class Volunteer(models.Model):
     #CONSTANTS
     OMNIVORE = 1

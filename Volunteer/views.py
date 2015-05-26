@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from registration.backends.simple.views import RegistrationView
 from Volunteer.models import Volunteer
 from django.http import HttpResponse
@@ -10,13 +10,13 @@ from django import forms
 def home(request):
     volunteer = request.user.profile
     if volunteer is not None:
-        if volunteer.is_active:
+#        if volunteer.is_active:
 #        info = {} 
 #        for field, value in volunteer:
 #            info[field] = value
-            return render(request, "home.html", {'volunteer' : volunteer} )
-    else:
-        return HttpResponse("This account has been disabled. Please email Volunteer@sdyoutopia.com for more information.")
+        return render(request, "home.html", {'volunteer' : volunteer} )
+#   else:
+#       return HttpResponse("This account has been disabled. Please email Volunteer@sdyoutopia.com for more information.")
 
 
 
