@@ -11,8 +11,8 @@ def home(request):
     try:
         volunteer = request.user.profile
         return render(request, "home.html", {'volunteer' : volunteer} )
-    except request.user.RelatedObjectDoesNotExist: 
-        views.volunteer_create
+    except AttributeError: 
+        return redirect(volunteer_create)
 
 
 class VolunteerForm(forms.ModelForm):
