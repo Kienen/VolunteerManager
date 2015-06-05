@@ -9,15 +9,17 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'VolunteerManager.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-
+    #url(r'^$', views.go_profile),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^accounts/register/complete/$', views.volunteer_create), 
     url(r'^accounts/', include('registration.backends.simple.urls')),
+
 #   url(r'^users/*$, 
     
  
 #    url(r'^user/create', views.CreateVolunteer.as_view()),
 #    url(r'^update/', login_required(views.UpdateVolunteer.as_view()), name="volunteer_update_form.html"),
-    url(r'^login/$', 'django.contrib.auth.views.login'),
+    url(r'^$', 'django.contrib.auth.views.login'),
 #    url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout'),
     url(r'^home/$', login_required(views.home)),

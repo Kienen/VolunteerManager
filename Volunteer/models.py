@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
+
 #Team describes a Department
 class Team(models.Model):
     #Budget =  Number of team members allowed

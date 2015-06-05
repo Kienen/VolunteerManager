@@ -2,25 +2,20 @@ from django.shortcuts import render, redirect
 from registration.backends.simple.views import RegistrationView
 from Volunteer.models import Volunteer
 from django.http import HttpResponse
-from django.views.generic.edit import CreateView, UpdateView
-from django.forms import ModelForm
+#from django.views.generic.edit import CreateView, UpdateView
+#from django.forms import ModelForm
 from django import forms
 
 # Create your views here.
 def home(request):
-    volunteer = request.user.profile
-    if volunteer is not None:
-#        if volunteer.is_active:
-#        info = {} 
-#        for field, value in volunteer:
-#            info[field] = value
+    try:
+        volunteer = request.user.profile
         return render(request, "home.html", {'volunteer' : volunteer} )
-#   else:
-#       return HttpResponse("This account has been disabled. Please email Volunteer@sdyoutopia.com for more information.")
+    except request.user.RelatedObjectDoesNotExist: 
+        views.volunteer_create
 
 
-
-class VolunteerForm(ModelForm):
+class VolunteerForm(forms.ModelForm):
     class Meta:
         model = Volunteer
         fields = Volunteer.PUBLIC_FIELD_NAMES
@@ -52,3 +47,6 @@ def volunteer_create(request):
         form = VolunteerForm()
 
     return render(request, 'volunteer_form.html', {'form': form})
+
+def go_profile(request):
+    return redirect('/home/')
