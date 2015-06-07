@@ -24,6 +24,7 @@ class Migration(migrations.Migration):
                 ('avail_su', models.BooleanField(default=True)),
                 ('avail_m', models.BooleanField(default=True)),
                 ('ass', models.BooleanField(default=False)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },
@@ -45,13 +46,15 @@ class Migration(migrations.Migration):
             name='Volunteer',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('first_name', models.CharField(max_length=30)),
+                ('last_name', models.CharField(max_length=30)),
                 ('playa_name', models.CharField(max_length=30, null=True)),
-                ('birthdate', models.DateTimeField(verbose_name=b'Birth Date')),
+                ('birthdate', models.DateField(verbose_name=b'Birth Date')),
                 ('phone', models.CharField(help_text=b"'999-999-9999'", max_length=20)),
                 ('emergency_contact', models.CharField(max_length=30)),
                 ('emergency_phone', models.CharField(help_text=b"'999-999-999'", max_length=20)),
                 ('FB_user_name', models.CharField(help_text=b'(i.e. http://www.facebook.com/"YOU")', max_length=30, null=True, verbose_name=b'Facebook User Name')),
-                ('diet', models.IntegerField(default=1, help_text=b'Please choose the answer that *best* fits your dietary lifestyle.', verbose_name=b'Dietary Preference', choices=[(1, b'Omnivore - I like everything including Meat'), (2, b"Vegetarian - I don't eat any meat"), (3, b'Vegan - I don\t eat any animal products!')])),
+                ('diet', models.CharField(default=b'Omnivore', help_text=b'Please choose the answer that *best* fits your dietary lifestyle.', max_length=30, verbose_name=b'Dietary Preference', choices=[(b'Omnivore', b'Omnivore - I like everything including Meat'), (b'Vegetarian', b"Vegetarian - I don't eat any meat"), (b'Vegan', b'Vegan - I don\t eat any animal products!')])),
                 ('diet_restriction', models.CharField(help_text=b"Please list any food allergies. We encourage everyone to practice Radical Self-Reliance and provide food for themselves as we cannot guarantee our ability to accommodate everyone's dietary needs.", max_length=254, null=True, verbose_name=b'Specific dietary restriction')),
                 ('disability', models.CharField(max_length=254, verbose_name=b'Do you have any health or disability issues we should be aware of?')),
                 ('attended_BM', models.BooleanField(default=False, verbose_name=b'Have you attended a Burning Man event before?')),
@@ -67,16 +70,10 @@ class Migration(migrations.Migration):
                 ('rating', models.PositiveSmallIntegerField(null=True)),
                 ('notes', models.CharField(max_length=254, null=True)),
                 ('team', models.ForeignKey(to='Volunteer.Team', null=True)),
-                ('user', models.ForeignKey(related_name='profile', to=settings.AUTH_USER_MODEL, unique=True)),
+                ('user', models.OneToOneField(related_name='profile', to=settings.AUTH_USER_MODEL)),
             ],
             options={
             },
             bases=(models.Model,),
-        ),
-        migrations.AddField(
-            model_name='preferences2015',
-            name='volunteer',
-            field=models.OneToOneField(to='Volunteer.Volunteer'),
-            preserve_default=True,
         ),
     ]

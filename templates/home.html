@@ -1,11 +1,31 @@
+{% extends "base.html" %}
+
 {% load staticfiles %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
 
-
-    <ul>
-    {% for field_name in  volunteer %}
-        <li> {{field_name }}  </li>
-    {% endfor %}
-    </ul>
-
+{% block content %}
+ 
+<ul>
+	<li>#username = {{ volunteer.user.username }}
+    <li>#first_name = {{ volunteer.user.first_name }}
+    <li>#last_name = {{ volunteer.user.last_name }}
+    <li>#email = {{ volunteer.user.email }}
+    <li>{{ volunteer.playa_name }}
+    <li>{{ volunteer.birthdate }}
+    <li>{{ volunteer.phone }}
+    <li>{{ volunteer.emergency_contact }}
+    <li>{{ volunteer.emergency_phone }}
+    <li>'Facebook User Name'{{ volunteer.FB_user_name }}
+    <li>'Dietary Preference'{{ volunteer.diet  }}
+    <li>'Specific dietary restriction'{{ volunteer.diet_restriction }}
+    <li>health or disability issues {{ volunteer.disability  }}
+    <li>'Have you attended a Burning Man event before?'{{ volunteer.attended_BM }}
+    <li>'Have you volunteered with YOUtopia before?'{{ volunteer.v_YOUtopia }}
+    <li>'If YES, which teams have you worked with?'{{ volunteer.vexp_YOUtopia }}
+    <li>'Have you volunteered with any other festivals or events before? '{{ volunteer.v_other }}
+    <li>'If YES, please specify.' {{ volunteer.vexp_other }}
+    <li>'Super Powers'{{ volunteer.super_powers }}
+    <li>'Questions? Comments? Favorite Joke?' {{ volunteer.jokes }}
+</ul>
+{% endblock %}

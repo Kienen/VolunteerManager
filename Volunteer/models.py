@@ -16,29 +16,31 @@ class Team(models.Model):
 #The Volunteer class contains basic information about the Volunteer. OneToOneField relationship to the user.     
 class Volunteer(models.Model):
     #CONSTANTS
-    OMNIVORE = 1
-    VEGETARIAN = 2
-    VEGAN = 3
     DIET_CHOICES = (
-        (OMNIVORE, 'Omnivore - I like everything including Meat'),
-        (VEGETARIAN, 'Vegetarian - I don\'t eat any meat'),
-        (VEGAN, 'Vegan - I don\t eat any animal products!'),
+        ('Omnivore', 'Omnivore - I like everything including Meat'),
+        ('Vegetarian', 'Vegetarian - I don\'t eat any meat'),
+        ('Vegan', 'Vegan - I don\t eat any animal products!'),
     )
+    PUBLIC_FIELD_NAMES = [ 'first_name', 'last_name' , 'playa_name', 'birthdate', 'phone', 'emergency_contact', 'emergency_phone',
+        'FB_user_name', 'diet', 'diet_restriction', 'disability', 'attended_BM', 'v_YOUtopia', 'vexp_YOUtopia', 'v_other', 'vexp_other', 'super_powers', 'jokes']
+
+
     user = models.OneToOneField(User, related_name="profile")
     
     #User input fields
     #username = user.username
-    #first_name = user.first_name
-    #last_name = user.last_name
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
     #email = user.email
     playa_name = models.CharField(max_length=30, null=True)
-    birthdate = models.DateTimeField('Birth Date')
+    birthdate = models.DateField('Birth Date')
     phone = models.CharField(max_length=20, help_text="'999-999-9999'") # validators should be a list
     emergency_contact = models.CharField(max_length=30)
     emergency_phone = models.CharField(max_length=20, help_text="'999-999-999'") # validators should be a list
     FB_user_name = models.CharField('Facebook User Name', max_length=30, null=True, help_text='(i.e. http://www.facebook.com/"YOU")')
-    diet = models.IntegerField('Dietary Preference', choices = DIET_CHOICES, default=OMNIVORE, help_text='Please choose the answer that *best* fits your dietary lifestyle.')
-    diet_restriction = models.CharField('Specific dietary restriction', max_length=254, null=True, help_text="Please list any food allergies. We encourage everyone to practice Radical Self-Reliance and provide food for themselves as we cannot guarantee our ability to accommodate everyone's dietary needs.")
+    diet = models.CharField('Dietary Preference', max_length=30, choices = DIET_CHOICES, default='Omnivore', help_text='Please choose the answer that *best* fits your dietary lifestyle.')
+    diet_restriction = models.CharField('Specific dietary restriction', max_length=254, null=True, 
+                                        help_text="Please list any food allergies. We encourage everyone to practice Radical Self-Reliance and provide food for themselves as we cannot guarantee our ability to accommodate everyone's dietary needs.")
     disability = models.CharField('Do you have any health or disability issues we should be aware of?', max_length=254)
     attended_BM = models.BooleanField('Have you attended a Burning Man event before?', default=False)
     v_YOUtopia = models.BooleanField('Have you volunteered with YOUtopia before?', default=False)
@@ -47,8 +49,6 @@ class Volunteer(models.Model):
     vexp_other = models.CharField('If YES, please specify.', max_length=254, null = True)
     super_powers = models.CharField('Super Powers', max_length=254, null = True, help_text = "What special super powers or skills you have? What skills would you like to learn more about?")
     jokes = models.CharField('Questions? Comments? Favorite Joke?', max_length=254, null = True, help_text="How do you kill a circus? Go for the juggler.")
-    PUBLIC_FIELD_NAMES = [ 'playa_name', 'birthdate', 'phone', 'emergency_contact', 'emergency_phone',
-        'FB_user_name', 'diet', 'diet_restriction', 'disability', 'attended_BM', 'v_YOUtopia', 'vexp_YOUtopia', 'super_powers', 'jokes']
 
     #These fields are for administrative use.
     suggested_team = models.CharField(max_length=30, null=True)
@@ -70,9 +70,9 @@ class Volunteer(models.Model):
             yield (field_name, value)
             
 #Preferences2015 describes a Volunteer's availability and 
-#preferred teams in 2015. This has a One-to-One relationship with the Volunteer class.
+#preferred teams in 2015. This has a One-to-One relationship with the User class.
 class Preferences2015(models.Model):
-    volunteer = models.OneToOneField(Volunteer)
+    user = models.OneToOneField(User)
     avail_tu = models.BooleanField(default=True)
     avail_w = models.BooleanField(default=True)
     avail_th = models.BooleanField(default=True)

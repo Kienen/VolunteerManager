@@ -5,27 +5,24 @@ from django.http import HttpResponse
 #from django.views.generic.edit import CreateView, UpdateView
 #from django.forms import ModelForm
 from django import forms
+from django.template.defaultfilters import mark_safe
 
 # Create your views here.
-def home(request):
-    try:
-        volunteer = request.user.profile
-        return render(request, "home.html", {'volunteer' : volunteer} )
-    except AttributeError: 
-        return redirect(volunteer_create)
-
-
 class VolunteerForm(forms.ModelForm):
+    playa_name = forms.CharField(max_length=30, required=False)
+    diet_restriction = forms.CharField(max_length=30, label='Specific dietary restriction',  required=False,
+                                        help_text=mark_safe("Please list any food allergies. <br>We encourage everyone to practice Radical Self-Reliance and provide food for themselves as we cannot guarantee our ability to accommodate everyone's dietary needs."))
+    disability = forms.CharField(label='Do you have any health or disability issues we should be aware of?', max_length=30, required=False)
+    vexp_YOUtopia = forms.CharField(label=mark_safe('If YES, which teams have you worked with?<br>'), widget=forms.Textarea, required=False)
+    vexp_other = forms.CharField(label=mark_safe('If YES, please specify.<br>'), widget=forms.Textarea, required=False)
+    super_powers = forms.CharField(label=mark_safe('Super Powers<br>'), widget=forms.Textarea, required=False)
+    jokes = forms.CharField(label=mark_safe('Questions? Comments? Favorite Joke?<br>'), widget=forms.Textarea, required=False)
+
     class Meta:
         model = Volunteer
         fields = Volunteer.PUBLIC_FIELD_NAMES
-    playa_name = forms.CharField(max_length=30, required=False)
-    diet_restriction = forms.CharField(max_length=30, required=False)
-    disability = forms.CharField(max_length=30, required=False)
-    vexp_YOUtopia = forms.CharField(widget=forms.Textarea, required=False)
-    vxp_other = forms.CharField(widget=forms.Textarea, required=False)
-    super_powers = forms.CharField(widget=forms.Textarea, required=False)
-    jokes = forms.CharField(widget=forms.Textarea, required=False)
+
+
 
 def volunteer_create(request):
   # if this is a POST request we need to process the form data
@@ -40,13 +37,22 @@ def volunteer_create(request):
             profile.save()
             # redirect to a new URL:
             return redirect('/home/')
- #           return HttpResponse('Success! We will contact you after performing complex calculation, please join us in the YOUtopia Volunteers Facebook group!')
-
+ 
     # if a GET (or any other method) we'll create a blank form
     else:
         form = VolunteerForm()
 
     return render(request, 'volunteer_form.html', {'form': form})
 
+def home(request):
+    try:
+        volunteer = request.user.profile
+        return render(request, "home.html", {'volunteer' : volunteer} )
+    except AttributeError: 
+        return redirect(volunteer_create)
+
+
+
 def go_profile(request):
     return redirect('/home/')
+
