@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="preferences"
+ {% comment %} 
+I should probably make this an html snippet, but it only saves me 4 lines of code. If I
+expand this to something more involved, I'll change it.
+ {% endcomment %}
+
+	<form action="" method="post">{% csrf_token %}
+		{{ form.as_li }}
+		<input type="submit" value="Submit" />
+</form>
+</div>
+{% endblock %} 
