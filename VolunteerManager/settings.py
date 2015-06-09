@@ -72,7 +72,7 @@ WSGI_APPLICATION = 'VolunteerManager.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'volunteer',
+        'NAME': 'vol2',
         'USER': 'root',
         'PASSWORD': 'jolliko9',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on

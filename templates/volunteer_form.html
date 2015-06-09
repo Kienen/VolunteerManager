@@ -7,11 +7,6 @@ Our mutual participation as volunteers helps make YOUtopia the magical place it 
 Please submit your application *only* if you are confident in your ability to commit to volunteering your helping hands and heart for the specific teams designated below for a total of between 16-20 hours. 
 
 
- {% comment %} 
-I should probably make this an html snippet, but it only saves me 4 lines of code. If I
-expand this to something more involved, I'll change it.
- {% endcomment %}
-
 <form action="" method="post">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Submit" />

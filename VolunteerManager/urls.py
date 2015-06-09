@@ -17,7 +17,7 @@ urlpatterns = patterns('',
 
     #Profiles
     url(r'^profile/$', login_required(views.volunteer_create)),
-    url(r'^profile/2015/$', login_required(views.profile2015_create)),
+    url(r'^profile/2015/$', login_required(views.preferences2015_create)),
 
     
     #Password setting urls with built-in templates

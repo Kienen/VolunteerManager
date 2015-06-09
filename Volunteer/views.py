@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from registration.backends.simple.views import RegistrationView
-from Volunteer.models import Volunteer
+from Volunteer.models import Volunteer, Preferences2015
 from django.http import HttpResponse
 #from django.views.generic.edit import CreateView, UpdateView
 #from django.forms import ModelForm
@@ -15,7 +15,7 @@ class VolunteerForm(forms.ModelForm):
     #disability = forms.CharField(label='Do you have any health or disability issues we should be aware of?', max_length=30, required=False)
     vexp_YOUtopia = forms.CharField(label=mark_safe('If YES, which teams have you worked with?<br>'), widget=forms.Textarea, required=False)
     vexp_other = forms.CharField(label=mark_safe('If YES, please specify.<br>'), widget=forms.Textarea, required=False)
-    super_powers = forms.CharField(label=mark_safe('Super Powers<br>'), widget=forms.Textarea, required=False)
+    #super_powers = forms.CharField(label=mark_safe('Super Powers<br>'), widget=forms.Textarea, required=False)
     jokes = forms.CharField(label=mark_safe('Questions? Comments? Favorite Joke?<br>'), widget=forms.Textarea, required=False)
 
     class Meta:
@@ -25,8 +25,33 @@ class VolunteerForm(forms.ModelForm):
 class Preferences2015Form(forms.ModelForm):
     class Meta:
         model = Preferences2015
-        fields = ['__all__']
+        fields = '__all__'
         exclude = ['user']
+        
+    availability = ['avail_tu', 'avail_w','avail_th','avail_f','avail_sa', 'avail_su','avail_m']
+    teams_prefs = [
+    'ada',
+    'art_curation',
+    'center_camp',
+    'city_planning',
+    'commissary',
+    'dispatch',
+    'dispensary',
+    'fire',
+    'gate',
+    'greeters',
+    'lnt',
+    'outreach',
+    'paparaunchy',
+    'playshops',
+    'please',
+    'road_warriors',
+    'sales',
+    'swag',
+    'teleportus' ,
+    'ticketing' ,
+    'waldos',
+    'wolf_pack']
 
 
 def volunteer_create(request):

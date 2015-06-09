@@ -1,15 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="preferences"
- {% comment %} 
-I should probably make this an html snippet, but it only saves me 4 lines of code. If I
-expand this to something more involved, I'll change it.
- {% endcomment %}
+<div id="preferences">
+ {% for field in form.availability %}
+    <div class="availability">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+    </div>
+{% endfor %}
 
-	<form action="" method="post">{% csrf_token %}
-		{{ form.as_li }}
-		<input type="submit" value="Submit" />
+{% for field in form.teams_prefs %}
+    <div class="fieldWrapper">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+		{{ field.help_text }}
+    </div>
+{% endfor %}
+
 </form>
 </div>
 {% endblock %} 
+
+
+	<form action="" method="post">{% csrf_token %}
+		{{ form.as_li }}
+		
+		
+		<input type="submit" value="Submit" />
