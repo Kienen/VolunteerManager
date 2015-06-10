@@ -22,17 +22,17 @@ class Volunteer(models.Model):
         ('Vegetarian', "Vegetarian - I don't eat any meat"),
         ('Vegan', "Vegan - I don't eat any animal products!"),
     )
-    PUBLIC_FIELD_NAMES = [ 'first_name', 'last_name' , 'playa_name', 'birthdate', 'phone', 'emergency_contact', 'emergency_phone',
+    PUBLIC_FIELD_NAMES = [ 'first_name', 'last_name' , 'email', 'playa_name', 'birthdate', 'phone', 'emergency_contact', 'emergency_phone',
         'FB_user_name', 'diet', 'diet_restriction', 'disability', 'attended_BM', 'v_YOUtopia', 'vexp_YOUtopia', 'v_other', 'vexp_other', 'jokes']
 
 
-    user = models.OneToOneField(User, related_name="profile")
+    user = models.OneToOneField(User, related_name="profile", null=True)
     
     #User input fields
     #username = user.username
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    #email = user.email
+    email = models.CharField(max_length=30)
     playa_name = models.CharField(max_length=30, blank=True)
     birthdate = models.DateField('Birth Date')
     phone = models.CharField(max_length=20, help_text="'999-999-9999'") 
@@ -48,7 +48,7 @@ class Volunteer(models.Model):
     vexp_YOUtopia = models.CharField('If YES, which teams have you worked with?', max_length=254, blank=True)
     v_other = models.BooleanField('Have you volunteered with any other festivals or events before? ', default=False)
     vexp_other = models.CharField('If YES, please specify.', max_length=254, blank = True)
-    #super_powers = models.CharField('Super Powers', max_length=254, blank = True, help_text = "What special super powers or skills you have? What skills would you like to learn more about?")
+    super_powers = models.CharField('Super Powers', max_length=254, blank = True, help_text = "What special super powers or skills you have? What skills would you like to learn more about?")
     jokes = models.CharField('Questions? Comments? Favorite Joke?', max_length=254, blank = True, help_text="How do you kill a circus? Go for the juggler.")
 
     #These fields are for administrative use.
@@ -74,7 +74,7 @@ class Volunteer(models.Model):
 #preferred teams in 2015. This has a One-to-One relationship with the User class.
 class Preferences2015(models.Model):
     #CONSTANTS
-    HELP_TEXT_DICT = {
+    TEAM_DESCRIPTION_DICT = {
                       'ada': "Mobility Assistance",
                       'art_curation': "Coordinating with local artists to keep YOUtopia weird.",
                       'city_planning': "Whether it's managing the stage and myriad activities at Center Camp or maintaining sacred space at the Temple, this crew helps maintain spaces where each and every YOUtopian can gift their participation.",
@@ -101,47 +101,47 @@ class Preferences2015(models.Model):
                       'team' : "Some department heads are recruiting team members in advance. If you haven't already been recruited, not to fret! We will help place you on a team that fits your skills and interests. If you have already confirmed with your department lead that you will work with this team, please fill in this box then skip to the next section.",
                       }
                       
-    RATING_CHOICES = tuple((x, x) for x in range(1,5))
-    user = models.OneToOneField(User)
+    RATING_CHOICES = tuple((x, x) for x in range(1,6))
+    volunteer = models.OneToOneField(Volunteer, null=True)
     
     #availability
-    avail_tu = models.BooleanField(default=True, blank=True)
-    avail_w = models.BooleanField(default=True, blank=True)
-    avail_th = models.BooleanField(default=True, blank=True)
-    avail_f = models.BooleanField(default=True, blank=True)
-    avail_sa = models.BooleanField(default=True, blank=True)
-    avail_su = models.BooleanField(default=True, blank=True)
-    avail_m = models.BooleanField(default=True, blank=True)
-    ass = models.BooleanField('Are you interested in taking on more responsibility than most volunteers to make your department run smoothly and YOUtopia better than ever?', default=False, blank=True,  help_text=HELP_TEXT_DICT['ass'])
+    avail_tu = models.BooleanField('Tuesday, October 20th',default=True, blank=True)
+    avail_w = models.BooleanField('Wednesday, October 21st', default=True, blank=True)
+    avail_th = models.BooleanField('Thursday, October 22nd', default=True, blank=True)
+    avail_f = models.BooleanField('Friday, October 23rd', default=True, blank=True)
+    avail_sa = models.BooleanField('Saturday, October 24th', default=True, blank=True)
+    avail_su = models.BooleanField('Sunday, October 25th', default=True, blank=True)
+    avail_m = models.BooleanField('Monday, October 26th', default=True, blank=True)
+    ass = models.BooleanField('Are you interested in taking on more responsibility than most volunteers to make your department run smoothly and YOUtopia better than ever?', default=False, blank=True,  help_text=TEAM_DESCRIPTION_DICT['ass'])
 
     #Team Choices
-    #approved = models.BooleanField('Have you already been selected to be part of a team?', default=False, blank=True, help_text=HELP_TEXT_DICT['team'])
-    approved_team = models.ForeignKey('Team', blank=True)
+    approved = models.BooleanField('Have you already been selected to be part of a team?', default=False,  help_text=TEAM_DESCRIPTION_DICT['team'], blank= True)
+    approved_team = models.ForeignKey('Team', null=True, blank=True)
     approved_by = models.CharField(max_length=30, blank=True)
 
                       
-    ada= models.PositiveSmallIntegerField('ADA', blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['ada'])
-    art_curation = models.PositiveSmallIntegerField('Art Curation', blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['art_curation'])
-    center_camp = models.PositiveSmallIntegerField('Center Camp',blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['center_camp'])
-    city_planning = models.PositiveSmallIntegerField('City Planning', blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['city_planning'])
-    commissary = models.PositiveSmallIntegerField(blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['commissary'])
-    dispatch = models.PositiveSmallIntegerField(blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['dispatch'])
-    dispensary = models.PositiveSmallIntegerField(blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['dispensary'])
-    fire = models.PositiveSmallIntegerField(blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['fire'])
-    gate = models.PositiveSmallIntegerField(blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['gate'])
-    greeters = models.PositiveSmallIntegerField(blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['greeters'])
-    lnt = models.PositiveSmallIntegerField('Moopgicians', blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['lnt'])
-    outreach = models.PositiveSmallIntegerField('OUTreach', blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['outreach'])
-    paparaunchy = models.PositiveSmallIntegerField('PapaRaunchy', blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['paparaunchy'])
-    playshops = models.PositiveSmallIntegerField(blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['playshops'])
-    please = models.PositiveSmallIntegerField(blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['please'])
-    road_warriors = models.PositiveSmallIntegerField('Road Warriors', blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['road_warriors'])
-    sales = models.PositiveSmallIntegerField(blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['sales'])
-    swag = models.PositiveSmallIntegerField(blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['swag'])
-    teleportus = models.PositiveSmallIntegerField('TeleportUs', blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['teleportus'])
-    ticketing = models.PositiveSmallIntegerField(blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['ticketing'])
-    waldos = models.PositiveSmallIntegerField(blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['waldos'])
-    wolf_pack=  models.PositiveSmallIntegerField('Wolf Pack', blank=True, choices=RATING_CHOICES, help_text=HELP_TEXT_DICT['wolf_pack'])
+    ada= models.PositiveSmallIntegerField('ADA', null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['ada'], default=1)
+    art_curation = models.PositiveSmallIntegerField('Art Curation', null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['art_curation'], default=1)
+    center_camp = models.PositiveSmallIntegerField('Center Camp',null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['center_camp'], default=1)
+    city_planning = models.PositiveSmallIntegerField('City Planning', null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['city_planning'], default=1)
+    commissary = models.PositiveSmallIntegerField(null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['commissary'], default=1)
+    dispatch = models.PositiveSmallIntegerField(null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['dispatch'], default=1)
+    dispensary = models.PositiveSmallIntegerField(null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['dispensary'], default=1)
+    fire = models.PositiveSmallIntegerField(null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['fire'], default=1)
+    gate = models.PositiveSmallIntegerField(null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['gate'], default=1)
+    greeters = models.PositiveSmallIntegerField(null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['greeters'], default=1)
+    lnt = models.PositiveSmallIntegerField('Moopgicians', null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['lnt'], default=1)
+    outreach = models.PositiveSmallIntegerField('OUTreach', null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['outreach'], default=1)
+    paparaunchy = models.PositiveSmallIntegerField('PapaRaunchy', null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['paparaunchy'], default=1)
+    playshops = models.PositiveSmallIntegerField(null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['playshops'], default=1)
+    please = models.PositiveSmallIntegerField(null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['please'], default=1)
+    road_warriors = models.PositiveSmallIntegerField('Road Warriors', null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['road_warriors'], default=1)
+    sales = models.PositiveSmallIntegerField(null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['sales'], default=1)
+    swag = models.PositiveSmallIntegerField(null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['swag'], default=1)
+    teleportus = models.PositiveSmallIntegerField('TeleportUs', null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['teleportus'], default=1)
+    ticketing = models.PositiveSmallIntegerField(null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['ticketing'], default=1)
+    waldos = models.PositiveSmallIntegerField(null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['waldos'], default=1)
+    wolf_pack=  models.PositiveSmallIntegerField('Wolf Pack', null=True, choices=RATING_CHOICES, help_text=TEAM_DESCRIPTION_DICT['wolf_pack'], default=1)
 
     def __iter__(self):
         for field_name in self._meta.get_all_field_names():
