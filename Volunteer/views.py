@@ -129,7 +129,7 @@ def volunteer_create(request):
             try:
                 profile.email = request.user.email
             except:
-                profile.email = "No Email"
+                profile.email = "No Email Available"
             profile.save()
             # redirect to a new URL:
             return redirect('/profile/2015')
