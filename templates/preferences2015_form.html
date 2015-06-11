@@ -1,6 +1,17 @@
 {% extends "base.html" %}
+
+
 {% block script %}
-<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js" type="text/javascript"></script>
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script>
+$(document).ready(function() {
+	$('#recruited').hide();
+	$('#id_approved').change(function () {	
+		$('#recruited').toggle();
+		$('#teamprefs').toggle();
+	});
+});
+</script>
 
 {% endblock %}
 
@@ -22,7 +33,7 @@
 		<h2>Team Preferences</h2>
 		{% for field in form|slice:"7:9" %}
 			{{ field.errors }}
-			<p>{{ field.label }} {{ field }}<br>
+			<p> {{ field }} {{ field.label }}<br>
 			{{ field.help_text }} </p>		 
 		{% endfor %}
 		
@@ -32,7 +43,8 @@
 			<p>{{ field.label }} {{ field }}<br>
 			{{ field.help_text }} </p>		 
 		{% endfor %}
-
+		</div>
+		
 		<div id="teamprefs">		
 		{% for field in form|slice:"11:" %}
 		

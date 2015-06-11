@@ -98,7 +98,7 @@ class Preferences2015(models.Model):
                       'waldos' : "The Waldos keep an eagle eye open for uninvited guestss. They maintain a drag net to keep the perimeter secure and work closely with security to ensure anyone who isn't supposed to be at the event isn't at the event.",  
                       'wolf_pack' : "Abiding by their motto, \"First To Come, Last To Pull Out,\" the Wolf Pack are a die hard crew. Literally building the event from the ground up, this crew sees to it that the infrastructure for our fair YOUtopian city is in place for the event. They are also responsible for disassembling everything at the conclusion of the event so our city leaves no trace.",
                       'ass' : "Some teams will be choosing the most dedicated, experienced volunteers to train as assistants to the leads. These super volunteers will receive more training and more responsibility. Not everyone is cut out for this position, but we're looking for the best of the best.",
-                      'team' : "Some department heads are recruiting team members in advance. If you haven't already been recruited, not to fret! We will help place you on a team that fits your skills and interests. If you have already confirmed with your department lead that you will work with this team, please fill in this box then skip to the next section.",
+                      'team' : "Some department heads are recruiting team members in advance. If you haven't already been recruited, not to fret! We will help place you on a team that fits your skills and interests.",
                       }
                       
     RATING_CHOICES = tuple((x, x) for x in range(1,6))
