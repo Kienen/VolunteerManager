@@ -1,48 +1,46 @@
 <!DOCTYPE html>
-<html lang="en-us"
-
-
-
+<html lang="en">
 <head>
-<title>{% block title %}YOUtopia Volunteer Management{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+  {% load staticfiles %} 
+
+<link rel="stylesheet" type="text/css" href="/static/Volunteer/style.css" />
+ <title>{% block title %}YOUtopia Volunteer Management{% endblock %}</title>
 
 {%block script %} {% endblock %}
 
-
-{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
 </head>
+<body>
 
-
-<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
-
-<!-- Container -->
-<div id="container">
-
+<div class="container-fluid">
     <!-- Header -->
     <div id="header">
         <div id="branding">
-        {% block branding %}Thank you for volunteering!{% endblock %}
+        {% block branding %}<a href="http://www.sdyoutopia.com"><img src="/static/Volunteer/images/youtopia-1.png"></img></a>{% endblock %}
         </div>
     </div>
     <!-- END Header -->
-
+    
     <!-- Content -->
     <div id="content" class="{% block coltype %}colM{% endblock %}">
         {% block pretitle %}{% endblock %}
         {% block content_title %}<h1>YOUtopia 2015 Volunteer Application</h1>{% endblock %}
         {% block content %}
-        {% block object-tools %}{% endblock %}
-        {{ content }}
         {% endblock %}
         {% block sidebar %}{% endblock %}
         <br class="clear" />
     </div>
     <!-- END Content -->
-
-    {% block footer %}<div id="footer"></div>{% endblock %}
+    
+     {% block footer %}<div id="footer"></div>{% endblock %}   
 </div>
-<!-- END Container -->
 
 </body>
 </html>
-

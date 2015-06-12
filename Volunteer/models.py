@@ -23,7 +23,7 @@ class Volunteer(models.Model):
         ('Vegan', "Vegan - I don't eat any animal products!"),
     )
     PUBLIC_FIELD_NAMES = [ 'first_name', 'last_name' , 'email', 'playa_name', 'birthdate', 'phone', 'emergency_contact', 'emergency_phone',
-        'FB_user_name', 'diet', 'diet_restriction', 'disability', 'attended_BM', 'v_YOUtopia', 'vexp_YOUtopia', 'v_other', 'vexp_other', 'jokes']
+        'FB_user_name', 'diet', 'diet_restriction', 'disability', 'attended_BM', 'v_YOUtopia', 'vexp_YOUtopia', 'v_other', 'vexp_other', 'super_powers', 'jokes']
 
 
     user = models.OneToOneField(User, related_name="profile", null=True)

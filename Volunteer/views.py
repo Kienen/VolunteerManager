@@ -18,13 +18,13 @@ class HorizRadioRenderer(forms.RadioSelect.renderer):
             
 class VolunteerForm(forms.ModelForm):
     #playa_name = forms.CharField(max_length=30, required=False)
-    diet_restriction = forms.CharField(max_length=30, label='Specific dietary restriction',  required=False,
+    diet_restriction = forms.CharField(max_length=30, label='Specific dietary restriction:',  required=False,
                                         help_text=mark_safe("Please list any food allergies. <br>We encourage everyone to practice Radical Self-Reliance and provide food for themselves as we cannot guarantee our ability to accommodate everyone's dietary needs."))
     #disability = forms.CharField(label='Do you have any health or disability issues we should be aware of?', max_length=30, required=False)
-    vexp_YOUtopia = forms.CharField(label=mark_safe('If YES, which teams have you worked with?<br>'), widget=forms.Textarea, required=False)
-    vexp_other = forms.CharField(label=mark_safe('If YES, please specify.<br>'), widget=forms.Textarea, required=False)
-    #super_powers = forms.CharField(label=mark_safe('Super Powers<br>'), widget=forms.Textarea, required=False)
-    jokes = forms.CharField(label=mark_safe('Questions? Comments? Favorite Joke?<br>'), widget=forms.Textarea, required=False)
+    vexp_YOUtopia = forms.CharField(label=mark_safe('<p>If YES, which teams have you worked with?</p>'), widget=forms.Textarea, required=False)
+    vexp_other = forms.CharField(label=mark_safe('<p>If YES, please specify.</p>'), widget=forms.Textarea, required=False)
+    super_powers = forms.CharField(label=mark_safe('<p>What special super powers or skills you have? What skills would you like to learn more about?</p>'), widget=forms.Textarea, required=False)
+    jokes = forms.CharField(label=mark_safe('<p>Questions? Comments? Favorite Joke?</p>'), widget=forms.Textarea, required=False)
 
     class Meta:
         model = Volunteer
@@ -120,7 +120,7 @@ def volunteer_create(request):
   # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        form = VolunteerForm(request.POST)
+        form = VolunteerForm(request.POST, label_suffix='')
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
@@ -163,7 +163,8 @@ def preferences2015_create(request):
 def home(request):
     try:
         volunteer = request.user.profile
-        return render(request, "home.html", {'volunteer' : volunteer} )
+        preferences = request.user.profile.preferences2015
+        return render(request, "home.html", {'volunteer' : volunteer, 'preferences': preferences} )
     except AttributeError: 
         return redirect(volunteer_create)
 
