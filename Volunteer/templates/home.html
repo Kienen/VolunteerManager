@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content_title %}
+<h1>Success!!</h1>
+<h3>Your Application has been submitted!</h3>
+{% endblock %}
+
+{% block content %}
+ 
+ <p><h2>{{ volunteer.first_name }} {{ volunteer.last_name }} </h2></p>
+ <p>Thank you, 
+ 
+ {% if volunteer.playa_name %} 
+	{{ volunteer.playa_name }}
+{% else %} 
+	{{volunteer.first_name }}
+{% endif %}	
+	! The YOUtopia team will now perform complex mathematical calculations to ensure your unique talents are matched up with an awesome team of super heroes.</p>
+ <p>Please join us in the "YOUtopia Volunteers" Facebook group. If you have any questions email us any time at volunteerYOUtopia@gmail.com.
+
+ <ul>
+	<li>username: {{ volunteer.user.username }}
+    <li>email: {{ volunteer.email }}
+    <li>Playa Name: {{ volunteer.playa_name }}
+    <li>Birthdate: {{ volunteer.birthdate }}
+    <li>Phone Number: {{ volunteer.phone }}
+    <li>Emergency Contact: {{ volunteer.emergency_contact }}
+    <li>Emergency Phone Number: {{ volunteer.emergency_phone }}
+    <li>Facebook User Name: {{ volunteer.FB_user_name }}
+    <li>Dietary Preference: {{ volunteer.get_diet_display  }}
+    <li>Specific dietary restriction: {{ volunteer.diet_restriction }}
+    <li>Health or disability issues: {{ volunteer.disability  }}
+    <li>Have you attended a Burning Man event before? {{ volunteer.attended_BM }}
+    <li>Have you volunteered with YOUtopia before? {{ volunteer.v_YOUtopia }}
+    <li>If YES, which teams have you worked with? {{ volunteer.vexp_YOUtopia }}
+    <li>Have you volunteered with any other festivals or events before? {{ volunteer.v_other }}
+    <li>If YES, please specify. {{ volunteer.vexp_other }}
+    <li>Super Powers: {{ volunteer.super_powers }}
+    <li>Questions? Comments? Favorite Joke?: {{ volunteer.jokes }}
+	
+</ul>
+{% endblock %}
