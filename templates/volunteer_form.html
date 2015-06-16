@@ -1,5 +1,21 @@
 {% extends "base.html" %}
+{% block commentscript %}
 
+<script>
+$(document).ready(function() {
+	$('#id_vexp_YOUtopia').hide();
+	$('#id_vexp_other').hide();
+	
+	$('#id_v_YOUtopia').change(function () {	
+		$('#id_vexp_YOUtopia').toggle();
+	});
+	$('#id_v_other').change(function () {	
+		$('#id_vexp_other').toggle();
+	});
+});
+</script>
+
+{% endblock %}
 {% block content %}
 Thank you very much for your interest in volunteering for YOUtopia 2015! 
 Our mutual participation as volunteers helps make YOUtopia the magical place it is. EVERYONE who attends YOUtopia volunteers in some way, whether by assisting their theme camp or helping a fellow participant. 
@@ -9,7 +25,7 @@ Please submit your application *only* if you are confident in your ability to co
 
 <form action="" method="post">{% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Submit" />
+    <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
 {% endblock %} 
