@@ -33,7 +33,7 @@ class Volunteer(models.Model):
     last_name = models.CharField(max_length=30)
     email = models.CharField(max_length=30)
     playa_name = models.CharField(max_length=30, blank=True)
-    birthdate = models.DateField('Birth Date')
+    birthdate = models.DateField('Birth Date', help_text="mm/dd/yyyy")
     phone = models.CharField(max_length=20, help_text="'999-999-9999'") 
     emergency_contact = models.CharField(max_length=30)
     emergency_phone = models.CharField(max_length=20, help_text="'999-999-999'") 
