@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block stylesheet %} <link rel="stylesheet" type="text/css" href="/static/Volunteer/staffstyle.css" /> {% endblock %}
+
+{% block body%}
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="/team/"><img class="img-responsive" src="/static/Volunteer/images/youtopia.jpg"></img></a>
+                </li>
+				{% if this_team %}
+				<li><h2><a href="{{this_team.get_absolute_url}}">{{this_team}}</a></h2></li>
+				<li><a href="{{this_team.get_absolute_url}}/suggest">Suggested Volunteers</a></li>
+				<li><a href="/team/volunteers/">All Unclaimed Volunteers</a></li>
+				<li><a href="{{this_team.get_absolute_url}}/email">Phone/Email List</a></li>
+				<li><a href="{{this_team.get_absolute_url}}/availability">Availability</a></li>
+				<li><a href="{{this_team.get_absolute_url}}/Description">Change Team Description</a></li>
+				{% else %}<li><a href="/team/"><h2>Home</h2></a></li>
+				{% endif %}
+                {% block sidebar %} {% endblock %}
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+					    <!-- Header -->
+						<div id="header">
+							<div id="branding">
+							{% block branding %}<a href="http://www.sdyoutopia.com"><img class="img-rounded img-responsive" src="/static/Volunteer/images/logo.jpg"></img></a>{% endblock %}
+							</div>
+						</div>
+						<!-- END Header -->
+					
+						<!-- Content -->
+						<div id="content" class="{% block coltype %}colM{% endblock %}">
+							{% block pretitle %}{% endblock %}
+							{% block content_title %}<h1>YOUtopia 2015 Volunteer Management</h1>{% endblock %}
+							{% block content %}{% endblock %}
+							{% block postcontent %} {% endblock%}
+							<br class="clear" />
+						</div>
+						<!-- END Content -->
+						
+						 {% block footer %}<div id="footer"></div>{% endblock %}   
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+    
+{% endblock %}

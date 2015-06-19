@@ -1,0 +1,41 @@
+{% extends "staffbase.html" %}
+
+{% block content_title %} <h1>{{ this_team }} Volunteer List</h1> {% endblock %}
+{% block script%} 
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover(); 
+});
+</script>
+{% endblock %}
+
+{% block content %}
+
+
+<h3>Approved Volunteers </h3>
+
+<ul>
+{% for volunteer in approved_volunteer_list %}
+    <li>{{ volunteer.first_name }} {% if volunteer.playa_name %}"{{ volunteer.playa_name }}" {% endif %}{{ volunteer.last_name }} {{volunteer.phone }} {{volunteer.email}}  </li>
+{% empty %}
+    <li>No volunteers yet.</li>
+{% endfor %}
+</ul>
+{% endblock %}
+
+{% block footer %}
+<div class="container">
+  <a href="#" data-toggle="popover" title="Quick Email List" data-content="
+  {% for volunteer in approved_volunteer_list %}
+  {{volunteer.email}},
+  {% endfor %}">Quick Email List</a>
+</div>
+
+<div class="container">
+  <a href="#" data-html="true" data-toggle="popover" title="Paste into a text file to import into your favorite address book" data-content="
+  First Name, Last Name, Nickname, Phone#,Email<br>
+  {% for volunteer in approved_volunteer_list %}
+  {{ volunteer.first_name }},{{ volunteer.last_name }},{% if volunteer.playa_name %}{{ volunteer.playa_name }}{% endif %},{{volunteer.phone }} ,{{volunteer.email}}<br>
+  {% endfor %}">CSV Contact List</a>
+</div>
+{% endblock %}
