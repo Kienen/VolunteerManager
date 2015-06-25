@@ -7,12 +7,15 @@ from django.contrib.auth.models import User
 #Team describes a Department
 class Team(models.Model):
     #Budget =  Number of team members allowed
-    budget = models.PositiveSmallIntegerField()
+    budget = models.PositiveSmallIntegerField(default=0)
     name = models.CharField(max_length=30)
-    description = models.CharField(max_length=254)
+    description = models.CharField(max_length=254, blank=True)
 
     def __str__(self):
-        return name
+        return self.name
+        
+    def get_absolute_url(self):
+        return "/team/%s" % (self.id)
 
 #The Volunteer class contains basic information about the Volunteer. OneToOneField relationship to the user.     
 class Volunteer(models.Model):
@@ -51,8 +54,8 @@ class Volunteer(models.Model):
     jokes = models.CharField('Questions? Comments? Favorite Joke?', max_length=254, blank = True, help_text="How do you kill a circus? Go for the juggler.")
 
     #These fields are for administrative use.
-    suggested_team = models.CharField(max_length=30, null=True)
-    team = models.ForeignKey('Team', null=True)
+    suggested_team = models.ForeignKey('Team', null=True, related_name = 'suggested_team', blank=True)
+    team = models.ForeignKey('Team', blank= True, null=True, related_name='team')
     has_ticket = models.BooleanField(default=False)
     scheduled = models.BooleanField(default=False)
     rating = models.PositiveSmallIntegerField(null=True) 
@@ -104,13 +107,13 @@ class Preferences2015(models.Model):
     volunteer = models.OneToOneField(Volunteer, null=True)
     
     #availability
-    avail_tu = models.BooleanField('Tuesday, October 20th',default=True, blank=True)
-    avail_w = models.BooleanField('Wednesday, October 21st', default=True, blank=True)
-    avail_th = models.BooleanField('Thursday, October 22nd', default=True, blank=True)
-    avail_f = models.BooleanField('Friday, October 23rd', default=True, blank=True)
-    avail_sa = models.BooleanField('Saturday, October 24th', default=True, blank=True)
-    avail_su = models.BooleanField('Sunday, October 25th', default=True, blank=True)
-    avail_m = models.BooleanField('Monday, October 26th', default=True, blank=True)
+    avail_tu = models.BooleanField('Tuesday, October 13th',default=True, blank=True)
+    avail_w = models.BooleanField('Wednesday, October 14st', default=True, blank=True)
+    avail_th = models.BooleanField('Thursday, October 15nd', default=True, blank=True)
+    avail_f = models.BooleanField('Friday, October 16th', default=True, blank=True)
+    avail_sa = models.BooleanField('Saturday, October 17th', default=True, blank=True)
+    avail_su = models.BooleanField('Sunday, October 18th', default=True, blank=True)
+    avail_m = models.BooleanField('Monday, October 19th', default=True, blank=True)
     ass = models.BooleanField('Are you interested in taking on more responsibility than most volunteers to make your department run smoothly and YOUtopia better than ever?', default=False, blank=True,  help_text=TEAM_DESCRIPTION_DICT['ass'])
 
     #Team Choices
@@ -149,3 +152,11 @@ class Preferences2015(models.Model):
             except:
                 value = None
             yield (field_name, value)
+            
+    def __str__(self):
+        return self.volunteer.first_name + " " + self.volunteer.last_name
+        
+#    def __init__(self):
+#        if self.approved_team != Null:
+#            self.volunteer.suggested_team = self.approved_team
+            

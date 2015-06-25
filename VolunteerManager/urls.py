@@ -8,16 +8,28 @@ from django.contrib.auth.decorators import login_required
 urlpatterns = patterns('',
     
     url(r'^admin/', include(admin.site.urls)),
+    
+    #team leads
 
-    url(r'^accounts/register/complete/$', views.volunteer_create), 
+    url(r'^team/$', views.team_choose),
+    url(r'^team/(?P<team_arg>\d{1,})/$', views.team_view),
+    url(r'^team/(?P<team_arg>\d{1,})/suggest$', views.suggest_view),
+    url(r'^team/(?P<team_arg>\d{1,})/email$', views.email_view),
+    url(r'^team/volunteers/$', views.unclaimed_view),
+    
+    
+    #Volunteer Profiles
+    url(r'^accounts/register/complete/$', views.volunteer_create),
+    url(r'^profile/$', login_required(views.volunteer_create)),
+    url(r'^profile/2015/$', login_required(views.preferences2015_create)),
+    
+    #Registration
     url(r'^accounts/', include('registration.backends.simple.urls')),
-    url(r'^$', 'django.contrib.auth.views.login'),
+    url(r'^$', 'django.contrib.auth.views.login', name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout'),
     url(r'^home/$', login_required(views.home)),
 
-    #Profiles
-    url(r'^profile/$', login_required(views.volunteer_create)),
-    url(r'^profile/2015/$', login_required(views.preferences2015_create)),
+
 
     
     #Password setting urls with built-in templates
