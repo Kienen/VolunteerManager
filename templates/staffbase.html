@@ -18,6 +18,9 @@
 				<li><a href="{{this_team.get_absolute_url}}/suggest">Suggested Volunteers</a></li>
 				<li><a href="/team/volunteers/">All Unclaimed Volunteers</a></li>
 				<li><a href="{{this_team.get_absolute_url}}/email">Phone/Email List</a></li>
+				<li><a href="{{this_team.get_absolute_url}}/availability">Availability</a></li>
+				<li><a href="{{this_team.get_absolute_url}}/Description">Change Team Description</a></li>
+				{% else %}<li><a href="/team/"><h2>Home</h2></a></li>
 				{% endif %}
                 {% block sidebar %} {% endblock %}
             </ul>

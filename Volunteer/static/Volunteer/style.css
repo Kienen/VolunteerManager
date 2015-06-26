@@ -4,3 +4,8 @@ body {
 	font-family: "Arial Bold", Arial, Helvetica, sans-serif;
 }
 
+.FieldError  input[type="text"] {
+
+  background-color : #FF9900; 
+
+}

@@ -1,16 +1,16 @@
 {% extends "base.html" %}
-{% block commentscript %}
+{% block script %}
 
 <script>
 $(document).ready(function() {
-	$('#id_vexp_YOUtopia').hide();
-	$('#id_vexp_other').hide();
+	$('.vexp_YOUtopia').hide();
+	$('.vexp_other').hide();
 	
 	$('#id_v_YOUtopia').change(function () {	
-		$('#id_vexp_YOUtopia').toggle();
+		$('.vexp_YOUtopia').toggle();
 	});
 	$('#id_v_other').change(function () {	
-		$('#id_vexp_other').toggle();
+		$('.vexp_other').toggle();
 	});
 });
 </script>
@@ -24,7 +24,26 @@ Please submit your application *only* if you are confident in your ability to co
 
 
 <form action="" method="post">{% csrf_token %}
-    {{ form.as_p }}
+   {% for field in form|slice:":19" %}
+    <div class="{{field.html_name}}{% if field.errors %} FieldError{%endif%}">
+        {{ field.errors }}
+		{% if field.name == 'vexp_YOUtopia' %}{{ field.label_tag }}<br> {{ field }}  <br>{{ field.help_text }}
+		{% elif field.name == 'vexp_other' %}{{ field.label_tag }}<br> {{ field }}  <br>{{ field.help_text }}
+		{% elif field.name == 'super_powers' %}{{ field.label_tag }}<br> {{ field }}  <br>{{ field.help_text }}
+		{% elif field.name == 'jokes' %}{{ field.label_tag }}<br> {{ field }}  <br>{{ field.help_text }}
+		{% elif field.name == 'ass' %}{{ field.label_tag }} {{ field }}  <br>{{ field.help_text }}
+        {% else %} {{ field.label_tag }} {{ field }}  {{ field.help_text }}
+		{% endif %}
+    </div>
+{% endfor %}
+
+<h3>Availability</h3>
+   {% for field in form|slice:"19:" %}
+    <div class="{{field.html_name}}">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}  {{ field.help_text }}
+    </div>
+{% endfor %}
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 

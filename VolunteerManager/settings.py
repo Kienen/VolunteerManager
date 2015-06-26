@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'registration',
         #Copyright (c) 2007-2012, James Bennett
         #All rights reserved.
+        'guardian',
     'django.contrib.sites',
     
 #LOCAL APPS
@@ -59,7 +60,14 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # this is default
+    'guardian.backends.ObjectPermissionBackend',
+)
+
 ROOT_URLCONF = 'VolunteerManager.urls'
+
+ANONYMOUS_USER_ID = -1
 
 WSGI_APPLICATION = 'VolunteerManager.wsgi.application'
 
@@ -70,7 +78,7 @@ WSGI_APPLICATION = 'VolunteerManager.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'vol4',
+        'NAME': 'volunteer',
         'USER': 'root',
         'PASSWORD': 'jolliko9',
         'HOST': 'localhost',   # Or an IP Address that your DB is hosted on

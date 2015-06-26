@@ -15,6 +15,11 @@ $('[data-toggle="popover"]').popover({
     max-width: 100%; /* Max Width of the popover (depending on the container!) */
 }
 
+.center{
+	margin-left: auto;
+    margin-right: auto;
+}
+
 /*!
  * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
  * Code licensed under the Apache License v2.0.
