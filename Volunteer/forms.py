@@ -33,7 +33,7 @@ class VolunteerForm(forms.ModelForm):
     vexp_YOUtopia = forms.CharField(label=mark_safe('If so, which teams have you worked with?'), widget=forms.Textarea, required=False)
     vexp_other = forms.CharField(label=mark_safe('If so, please specify.'), widget=forms.Textarea, required=False)
     super_powers = forms.CharField(label=mark_safe('What special super powers or skills you have? What skills would you like to learn more about?'), widget=forms.Textarea, required=False)
-    jokes = forms.CharField(label=mark_safe('Questions? Comments? Favorite Joke?'), widget=forms.Textarea, required=False)
+    jokes = forms.CharField(label=mark_safe('Questions? Comments? Favorite Joke?'), widget=forms.Textarea, required=False, help_text="How do you kill a circus? Go for the juggler.")
 
     class Meta:
         model = Volunteer

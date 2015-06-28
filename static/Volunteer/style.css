@@ -1,0 +1,11 @@
+body {
+    background: #B0C4DE;
+	
+	font-family: "Arial Bold", Arial, Helvetica, sans-serif;
+}
+
+.FieldError  input[type="text"] {
+
+  background-color : #FF9900; 
+
+}

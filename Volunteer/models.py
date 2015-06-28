@@ -9,8 +9,10 @@ class Team(models.Model):
     #Budget =  Number of team members allowed
     budget = models.PositiveSmallIntegerField(default=0)
     name = models.CharField(max_length=30)
-    description = models.CharField(max_length=254, blank=True)
-
+    description = models.CharField(max_length=500, blank=True)
+    class Meta:
+        ordering = ['name']
+        
     def __str__(self):
         return self.name
         
