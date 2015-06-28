@@ -24,7 +24,8 @@ Please submit your application *only* if you are confident in your ability to co
 
 
 <form action="" method="post">{% csrf_token %}
-   {% for field in form|slice:":19" %}
+	{{ form.non_field_errors }}
+   {% for field in form|slice:":18" %}
     <div class="{{field.html_name}}{% if field.errors %} FieldError{%endif%}">
         {{ field.errors }}
 		{% if field.name == 'vexp_YOUtopia' %}{{ field.label_tag }}<br> {{ field }}  <br>{{ field.help_text }}
@@ -37,6 +38,14 @@ Please submit your application *only* if you are confident in your ability to co
     </div>
 {% endfor %}
 
+<h3>Super Volunteers</h3>
+	{% for field in form|slice:"18:19" %}
+    <div class="{{field.html_name}}{% if field.errors %} FieldError{%endif%}">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }} <br>  {{ field.help_text }}
+
+    </div>
+{% endfor %}
 <h3>Availability</h3>
    {% for field in form|slice:"19:" %}
     <div class="{{field.html_name}}">
