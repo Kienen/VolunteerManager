@@ -30,7 +30,7 @@ urlpatterns = patterns('',
     #Registration
     url(r'^accounts/register/complete/$', views.volunteer_create),
     url(r'^accounts/', include('registration.backends.simple.urls')),
-    url(r'^$', 'django.contrib.auth.views.login', name='login'),
+    url(r'^$', 'django.contrib.auth.views.login',  {'template_name': 'Volunteer/registration/login.html'}),
     url(r'^logout/$', 'django.contrib.auth.views.logout'),
 
 

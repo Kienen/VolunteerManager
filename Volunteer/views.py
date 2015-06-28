@@ -275,7 +275,7 @@ def initialize(request):
         except:
             lead= User.objects.get(username= this_name)
         if createdlead:
-            User.set_password("glitteringprizes")
+            lead.set_password("glitteringprizes")
         (leadgroup, leadgroupcreated) = Group.objects.get_or_create(name='leads')
         
         lead.save()

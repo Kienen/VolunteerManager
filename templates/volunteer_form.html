@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block script %}
+
+<script>
+$(document).ready(function() {
+	$('.vexp_YOUtopia').hide();
+	$('.vexp_other').hide();
+	
+	$('#id_v_YOUtopia').change(function () {	
+		$('.vexp_YOUtopia').toggle();
+	});
+	$('#id_v_other').change(function () {	
+		$('.vexp_other').toggle();
+	});
+});
+</script>
+
+{% endblock %}
+{% block content %}
+Thank you very much for your interest in volunteering for YOUtopia 2015! 
+Our mutual participation as volunteers helps make YOUtopia the magical place it is. EVERYONE who attends YOUtopia volunteers in some way, whether by assisting their theme camp or helping a fellow participant. 
+
+Please submit your application *only* if you are confident in your ability to commit to volunteering your helping hands and heart for the specific teams designated below for a total of between 16-20 hours. 
+
+
+<form action="" method="post">{% csrf_token %}
+	{{ form.non_field_errors }}
+   {% for field in form|slice:":18" %}
+    <div class="{{field.html_name}}{% if field.errors %} FieldError{%endif%}">
+        {{ field.errors }}
+		{% if field.name == 'vexp_YOUtopia' %}{{ field.label_tag }}<br> {{ field }}  <br>{{ field.help_text }}
+		{% elif field.name == 'vexp_other' %}{{ field.label_tag }}<br> {{ field }}  <br>{{ field.help_text }}
+		{% elif field.name == 'super_powers' %}{{ field.label_tag }}<br> {{ field }}  <br>{{ field.help_text }}
+		{% elif field.name == 'jokes' %}{{ field.label_tag }}<br> {{ field }}  <br>{{ field.help_text }}
+		{% elif field.name == 'ass' %}{{ field.label_tag }} {{ field }}  <br>{{ field.help_text }}
+        {% else %} {{ field.label_tag }} {{ field }}  {{ field.help_text }}
+		{% endif %}
+    </div>
+{% endfor %}
+
+<h3>Super Volunteers</h3>
+	{% for field in form|slice:"18:19" %}
+    <div class="{{field.html_name}}{% if field.errors %} FieldError{%endif%}">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }} <br>  {{ field.help_text }}
+
+    </div>
+{% endfor %}
+<h3>Availability</h3>
+   {% for field in form|slice:"19:" %}
+    <div class="{{field.html_name}}">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}  {{ field.help_text }}
+    </div>
+{% endfor %}
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %} 
