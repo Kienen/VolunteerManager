@@ -43,9 +43,6 @@ def volunteer_create(request):
                     redirect ('/home/')
                 else:
                     return redirect('/ratings')
-        else:
-            
-            return HttpResponse(request.POST.mew)
     # if a GET (or any other method) we'll create a blank form
     else:
         try:
