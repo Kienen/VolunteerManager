@@ -16,7 +16,7 @@
 	{{volunteer.first_name }}
 {% endif %}	
 	! The YOUtopia team will now perform complex mathematical calculations to ensure your unique talents are matched up with an awesome team of super heroes.</p>
- <p>Please join us in the <a href=https://www.facebook.com/groups/youtopia.volunteers/">YOUtopia Volunteers Facebook group</a>. If you have any questions email us any time at volunteerYOUtopia@gmail.com.
+ <p>Please join us in the <a href="https://www.facebook.com/groups/youtopia.volunteers/">YOUtopia Volunteers Facebook group</a>. If you have any questions email us any time at volunteer@sdyoutopia.com.
 
  <ul>
 	<li>username: {{ volunteer.user.username }}
@@ -37,6 +37,7 @@
     <li>If YES, please specify. {{ volunteer.vexp_other }}
     <li>Super Powers: {{ volunteer.super_powers }}
     <li>Questions? Comments? Favorite Joke?: {{ volunteer.jokes }}
-	
+	<li><a href="/accounts/register/complete/">Update Information</a>
+	<li><a href="/ratings/">Rate Teams</a>
 </ul>
 {% endblock %}

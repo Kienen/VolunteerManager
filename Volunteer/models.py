@@ -46,7 +46,7 @@ class Volunteer(models.Model):
     phone = models.CharField(max_length=20, help_text="'999-999-9999'") 
     emergency_contact = models.CharField(max_length=30)
     emergency_phone = models.CharField(max_length=20, help_text="'999-999-999'") 
-    FB_user_name = models.CharField('Facebook User Name', max_length=30, blank=True, help_text='(i.e. http://www.facebook.com/"YOU")')
+    FB_user_name = models.CharField('Facebook User Name', max_length=30, blank=True, help_text='(http://www.facebook.com/--->USER NAME<--)')
     diet = models.CharField('Dietary Preference', max_length=30, choices = DIET_CHOICES, default='Omnivore', help_text='Please choose the answer that *best* fits your dietary lifestyle.')
     diet_restriction = models.CharField('Specific dietary restriction', max_length=254, blank=True, 
                                         help_text="Please list any food allergies. We encourage everyone to practice Radical Self-Reliance and provide food for themselves as we cannot guarantee our ability to accommodate everyone's dietary needs.")

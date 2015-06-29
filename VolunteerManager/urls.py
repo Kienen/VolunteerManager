@@ -23,7 +23,7 @@ urlpatterns = patterns('',
     #Volunteer Profiles
     url(r'^home/$', login_required(views.home)),
     url(r'^profile/$', login_required(views.volunteer_create)),
-    url(r'^ratings$', login_required(views.rating)),
+    url(r'^ratings/$', login_required(views.rating)),
     url(r'^password/$', auth_views.password_change),
     
 
