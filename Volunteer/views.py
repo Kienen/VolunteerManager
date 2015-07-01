@@ -290,7 +290,40 @@ def initialize(request):
     return HttpResponse('Initialize Successful!')
     
 
-
-
+@permission_required('Volunteer.add_team')    
+def passwordmassupdate(request):
+    PASS_DICT = {
+                'wolfpack': 'barkatthemoon'
+                'temple': 'ccandthetemple'
+                'centercamp': 'ccandthetemple'
+                'cityplanning': 'citiesindust'
+                'transportation': 'dustytravels'
+                'please': 'feelgoodinc'
+                'fire': 'flareups'
+                'gate': 'giftedandtalentedentry'
+                'greeters': 'hugalicious'
+                'outreach': 'mediatwerkas'
+                'chowhounds': 'need2feed'
+                'playshops': 'playasgottaplay'
+                'roadwarriors': 'sirparksalot'
+                'moopgicians': 'sofreshsoclean'
+                'initiation': 'willcallmemaybe'
+                'media': 'documazing'
+                'dispensary': 'allthethings'
+                'schwag': 'glitteringprizes'
+                'sales': 'coffeeteaorme'
+                'watergate': 'allthepresidentsmen'
+                'waldos': 'gottacatchemall'                }
     
-
+    updated_list = 'Updated:'
+    notupdated_list = 'Not Updated:'
+    
+    for team in Teams.objects.all():
+        (lead, createdlead) = User.objects.get_or_create(username= team.name)
+        try: 
+            lead.set_password(PASS_DICT[lead.username)
+            updated_list= updated_list + " " + lead.username
+        except:
+            notupdated_list= notupdated_list + " " + lead.username
+            
+    return HttpResponse(updated_list + "\n" + notupdated_list)
