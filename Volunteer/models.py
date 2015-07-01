@@ -10,6 +10,8 @@ class Team(models.Model):
     budget = models.PositiveSmallIntegerField(default=0)
     name = models.CharField(max_length=30)
     description = models.CharField(max_length=500, blank=True)
+    visible = models.BooleanField(default= True)
+    
     class Meta:
         ordering = ['name']
         
@@ -24,6 +26,9 @@ class Team(models.Model):
 
 #The Volunteer class contains basic information about the Volunteer. OneToOneField relationship to the user.     
 class Volunteer(models.Model):
+    class Meta:
+        ordering = ['first_name']
+        
     #CONSTANTS
     DIET_CHOICES = (
         ('Omnivore', "Omnivore - I like everything including Meat"),
@@ -81,7 +86,8 @@ class Volunteer(models.Model):
     has_ticket = models.BooleanField(default=False)
     scheduled = models.BooleanField(default=False)
     volunteer_rating = models.PositiveSmallIntegerField(null=True) 
-    notes = models.CharField(max_length=254, null=True)    
+    notes = models.CharField(max_length=254, null=True) 
+    limbo = models.BooleanField(default=False)
         
     #Methods
     def __str__(self):
