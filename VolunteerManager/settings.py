@@ -9,7 +9,6 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-MEDIA_ROOT = 'media'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
@@ -24,9 +23,9 @@ STATICFILES_DIRS = (
 SECRET_KEY = '3_%%8#6+dz4*mosz#k8!t8nv+47mau92$rcl2#!3e=c@+t21od'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -84,6 +83,7 @@ WSGI_APPLICATION = 'VolunteerManager.wsgi.application'
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
 DATABASES = {}
+#DATABASES['default'] =  dj_database_url.config()
 DATABASES['default'] = dj_database_url.config() 
 DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
 
