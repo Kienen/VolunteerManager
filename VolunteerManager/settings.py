@@ -16,6 +16,12 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+STATICFILES_FINDERS = (
+
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,9 +31,9 @@ STATICFILES_DIRS = (
 SECRET_KEY = '3_%%8#6+dz4*mosz#k8!t8nv+47mau92$rcl2#!3e=c@+t21od'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-TEMPLATE_DEBUG = False
+TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -48,6 +54,7 @@ INSTALLED_APPS = (
         #Copyright (c) 2007-2012, James Bennett
         #All rights reserved.
     'guardian',
+    'favicon',
     'django.contrib.sites',
     
     
@@ -89,19 +96,19 @@ import dj_database_url
 DATABASES = {}
 DATABASES['default'] = dj_database_url.config() 
 DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
-
+'''
 #localhost
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.mysql',
-#        'NAME': 'djangostack',
-#        'USER': 'root',
-#        'PASSWORD': 'jolliko9',
-#        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
-#        'PORT': '3306',
-#    }
-#}
-
+DATABASES = {
+     'default': {
+         'ENGINE': 'django.db.backends.mysql',
+         'NAME': 'djangostack',
+         'USER': 'root',
+         'PASSWORD': 'jolliko9',
+         'HOST': 'localhost',     
+         'PORT': '3306',
+     }
+}
+'''
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

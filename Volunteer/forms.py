@@ -1,6 +1,8 @@
 from django import forms
 from Volunteer.models import *
 from django.template.defaultfilters import mark_safe
+from django.forms.models import modelformset_factory, inlineformset_factory
+from django.forms.formsets import formset_factory
 
 class HorizRadioRenderer(forms.RadioSelect.renderer):
     """ this overrides widget method to put radio buttons horizontally
@@ -10,17 +12,7 @@ class HorizRadioRenderer(forms.RadioSelect.renderer):
             """Outputs radios"""
             return mark_safe(u'\n'.join([u'%s\n' % w for w in self])+'<br>')
             
-#class RatingsRenderer(forms.SelectMultiple):
-         
-#    def render(self, *args, **kwargs):
-        #for x in args:
-        #    print x
-        #for key, value in kwargs:
-        #    print "%s - %s" % (key, value)
-        #print super(self)
- #       output = super(RatingsRenderer, self).render(*args,**kwargs) 
- #       print output
- #      return mark_safe(output.replace(u'<ul>', u'').replace(u'</ul>', u'').replace(u'<li>', u'<p>').replace(u'</li>', u'</p>'))
+
 
 class VolunteerNotesForm(forms.ModelForm):
     class Meta:
@@ -92,7 +84,22 @@ class RatingsForm(forms.Form):
                                                                  help_text=team.description, 
                                                                  choices=tuple((x, x) for x in range(1,6)), 
                                                                  widget=forms.RadioSelect(renderer=HorizRadioRenderer))
+RatingsFormSet= modelformset_factory
 
+class VolunteerOfficeForm(forms.ModelForm):
+    class Meta:
+        model = Volunteer
+        fields = '__all__'
+        exclude = ['user', 'ratings']
+        
+class ReadOnlyVolunteerForm (ReadOnlyFieldsMixin, VolunteerOfficeForm):
+    readonly_fields = Volunteer.PUBLIC_FIELD_NAMES + Volunteer.AVAILABILITY_FIELD_NAMES 
+    
+#RatingsFormSet = inlineformset_factory(Team, Rating, extra=0)
+
+
+    
+'''
 class SuggestForm(forms.Form):
     def __init__(self, *args, **kwargs):
         volunteers = kwargs.pop('volunteers')
@@ -102,3 +109,5 @@ class SuggestForm(forms.Form):
             self.fields[volunteer.id] = forms.ModelChoiceField(label=volunteer.first_name + volunteer.last_name,
                                                           queryset= Team.objects.all(), to_field_name="name",
                                                           required=False)
+                                                          
+'''                                                          

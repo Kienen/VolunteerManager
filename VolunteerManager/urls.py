@@ -6,7 +6,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required 
 
 urlpatterns = patterns('',
-    
+    url(r'^', include('favicon.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^initialize/', views.initialize),
     url(r'^passupdate/', views.passwordmassupdate),
@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^team/(?P<team_arg>\d{1,})/suggest$', views.suggest_view),
     url(r'^team/(?P<team_arg>\d{1,})/email$', views.email_view),
     url(r'^team/volunteers/$', views.unclaimed_view),
+    #url(r'^team/volunteers/(?P<vol_arg>\d{1,})/$', views.volunteer_detail_view),
     url(r'^team/login/$', 'django.contrib.auth.views.login', { 'template_name': 'team_login.html'}),
     url(r'^team/(?P<team_arg>\d{1,})/availability$', views.availability),
  
@@ -32,7 +33,7 @@ urlpatterns = patterns('',
     url(r'^accounts/register/complete/$', views.volunteer_create),
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^$', 'django.contrib.auth.views.login',  {'template_name': 'Volunteer/registration/login.html'}),
-    url(r'^logout/$', 'django.contrib.auth.views.logout'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'Volunteer/registration/logout.html'}),
 
 
     #Password setting urls with built-in templates

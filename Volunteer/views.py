@@ -14,6 +14,8 @@ from django.contrib.auth.decorators import user_passes_test, permission_required
 #from django.forms.formsets import formset_factory
 from django.forms.models import modelformset_factory
 from Volunteer.forms import *
+from django.contrib.auth import logout
+
 
 # Create your views here.
 #def islead(user)
@@ -293,6 +295,7 @@ def initialize(request):
 @permission_required('Volunteer.add_team')    
 def passwordmassupdate(request):
     PASS_DICT = {
+                'ada': 'mobilitymoproblems',
                 'wolfpack': 'barkatthemoon',
                 'temple': 'ccandthetemple',
                 'centercamp': 'ccandthetemple',
@@ -317,16 +320,27 @@ def passwordmassupdate(request):
     
     updated_list = 'Updated:'
     notupdated_list = 'Not Updated:'
+    (leadgroup, leadgroupcreated) = Group.objects.get_or_create(name='leads')
     
     for team in Team.objects.all():
         this_name = team.name.replace(" ", "")
         this_name = this_name.lower()
         (lead, createdlead) = User.objects.get_or_create(username= this_name)
+        (newgroup,createdgroup) = Group.objects.get_or_create(name= this_name)
+        assign_perm('change_team', newgroup, team)
+        
+        leadgroup.user_set.add(lead)
+        leadgroup.save()    
         
         try: 
             lead.set_password(PASS_DICT[this_name])
+            lead.save()
+
             updated_list= updated_list + " " + lead.username
         except:
             notupdated_list= notupdated_list + " " + lead.username
             
-    return HttpResponse(updated_list + "\n" + notupdated_list)
+    return HttpResponse(updated_list + "\a" + notupdated_list)
+    
+def logout_view(request):
+    logout(request)

@@ -13,7 +13,7 @@ class RatingInline(admin.TabularInline):
     #filter_horizontal = ('team',)
 
 class TeamAdmin(GuardedModelAdmin):
-    fields = ['budget', 'name', 'description', 'visibile']
+    fields = ['budget', 'name', 'description', 'visible']
     
 class VolunteerAdmin(admin.ModelAdmin):
         readonly_fields = ['first_name','last_name',  'disability', 'attended_BM', 'v_YOUtopia', 'vexp_YOUtopia', 'v_other', 'vexp_other','super_powers','jokes','ratings']
