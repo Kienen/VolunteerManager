@@ -82,10 +82,24 @@ WSGI_APPLICATION = 'VolunteerManager.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 # Parse database configuration from $DATABASE_URL
+
+#heroku
 import dj_database_url
 DATABASES = {}
 DATABASES['default'] = dj_database_url.config() 
 DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
+
+#localhost
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'djangostack',
+#        'USER': 'root',
+#        'PASSWORD': 'jolliko9',
+#        'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+#        'PORT': '3306',
+#    }
+#}
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
