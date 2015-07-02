@@ -179,7 +179,7 @@ def unclaimed_view(request):
             print 'unsaved'
     # if a GET (or any other method) we'll create a blank form
     else:
-        formset = VolunteerFormSet(queryset=Volunteer.objects.filter(team__isnull = True))
+        formset = VolunteerFormSet(queryset=Volunteer.objects.filter(team__isnull = True, limbo= False))
     return render (request, "suggest.html",  {'formset':formset
                                                     })
                                                     
@@ -303,11 +303,11 @@ def passwordmassupdate(request):
                 'gate': 'giftedandtalentedentry',
                 'greeters': 'hugalicious',
                 'outreach': 'mediatwerkas',
-                'chowhounds': 'need2feed',
+                'commissary': 'need2feed',
                 'playshops': 'playasgottaplay',
                 'roadwarriors': 'sirparksalot',
                 'moopgicians': 'sofreshsoclean',
-                'initiation': 'willcallmemaybe',
+                'ticketing': 'willcallmemaybe',
                 'media': 'documazing',
                 'dispensary': 'allthethings',
                 'schwag': 'glitteringprizes',
@@ -318,10 +318,13 @@ def passwordmassupdate(request):
     updated_list = 'Updated:'
     notupdated_list = 'Not Updated:'
     
-    for team in Teams.objects.all():
-        (lead, createdlead) = User.objects.get_or_create(username= team.name)
+    for team in Team.objects.all():
+        this_name = team.name.replace(" ", "")
+        this_name = this_name.lower()
+        (lead, createdlead) = User.objects.get_or_create(username= this_name)
+        
         try: 
-            lead.set_password(PASS_DICT[lead.username])
+            lead.set_password(PASS_DICT[this_name])
             updated_list= updated_list + " " + lead.username
         except:
             notupdated_list= notupdated_list + " " + lead.username

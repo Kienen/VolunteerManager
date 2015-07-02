@@ -7,7 +7,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 MEDIA_ROOT = 'media'
 
@@ -24,9 +25,9 @@ STATICFILES_DIRS = (
 SECRET_KEY = '3_%%8#6+dz4*mosz#k8!t8nv+47mau92$rcl2#!3e=c@+t21od'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -100,6 +101,7 @@ DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
 #        'PORT': '3306',
 #    }
 #}
+
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

@@ -46,10 +46,10 @@ class VolunteerSuggestForm(forms.ModelForm):
     #notes = forms.CharField(max_length=30, label='Notes',  required=False)
     class Meta:
         model = Volunteer
-        fields = [ 'first_name', 'last_name' ,  'playa_name', 'suggested_team', 'notes', 'birthdate',
+        fields = [ 'first_name', 'last_name' ,  'playa_name', 'suggested_team', 'limbo', 'notes', 'birthdate',
                   'FB_user_name',  'disability', 'attended_BM', 'v_YOUtopia', 'vexp_YOUtopia', 
-                  'v_other', 'vexp_other', 'super_powers', 'jokes', 'ass'] + Volunteer.AVAILABILITY_FIELD_NAMES #+ ['ratings']
-        #widgets={'ratings': forms.TextInput}
+                  'v_other', 'vexp_other', 'super_powers', 'jokes', 'ass'] + Volunteer.AVAILABILITY_FIELD_NAMES 
+        
         
     
 class ReadOnlyFieldsMixin(object):
@@ -80,7 +80,7 @@ class RatingsForm(forms.Form):
     approved = forms.BooleanField(label='Are you a returning volunteer or have you already been selected to be part of a team?', 
                                   required = False, 
                                   help_text="Some department heads are recruiting team members in advance. If you haven't already been recruited, not to fret! We will help place you on a team that fits your skills and interests.")
-    approved_team = forms.ModelChoiceField(label="Please select the team you've been recruited for", required = False, queryset= Team.objects.all(), to_field_name="name")
+    approved_team = forms.ModelChoiceField(label="Please select the team you've been recruited for", required = False, queryset= Team.objects.filter(visible=True), to_field_name="name")
     approved_by = forms.CharField(label='Which department head approved you?', max_length=30, required = False, help_text="Put (Returning) if you worked with this team last year.")
     
     def __init__(self, *args, **kwargs):

@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     
     url(r'^admin/', include(admin.site.urls)),
     url(r'^initialize/', views.initialize),
+    url(r'^passupdate/', views.passwordmassupdate),
     
     #Team Leads
     url(r'^team/$', views.team_choose),

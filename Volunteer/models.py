@@ -45,7 +45,7 @@ class Volunteer(models.Model):
     #User input fields
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    email = models.CharField(max_length=30)
+    email = models.CharField(max_length=200)
     playa_name = models.CharField(max_length=30, blank=True)
     birthdate = models.DateField('Birth Date', help_text="mm/dd/yyyy")
     phone = models.CharField(max_length=20, help_text="'999-999-9999'") 
@@ -76,7 +76,6 @@ class Volunteer(models.Model):
     
     #Team Choices
     approved = models.BooleanField('Have you already been selected to be part of a team?', default=False,  help_text="Some department heads are recruiting team members in advance. If you haven't already been recruited, not to fret! We will help place you on a team that fits your skills and interests.", blank= True)
-    #approved_team = models.ForeignKey('Team', null=True, blank=True)
     approved_by = models.CharField(max_length=30, blank=True)
     suggested_team = models.ForeignKey('Team', null=True, related_name = 'suggested_team', blank=True)
     team = models.ForeignKey('Team', blank= True, null=True, related_name='team')
