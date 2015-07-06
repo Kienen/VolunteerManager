@@ -31,9 +31,9 @@ STATICFILES_FINDERS = (
 SECRET_KEY = '3_%%8#6+dz4*mosz#k8!t8nv+47mau92$rcl2#!3e=c@+t21od'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 

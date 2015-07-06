@@ -32,7 +32,7 @@ $(document).ready(function() {
 		{% elif field.name == 'vexp_other' %}{{ field.label_tag }}<br> {{ field }}  <br>{{ field.help_text }}
 		{% elif field.name == 'super_powers' %}{{ field.label_tag }}<br> {{ field }}  <br>{{ field.help_text }}
 		{% elif field.name == 'jokes' %}{{ field.label_tag }}<br> {{ field }}  <br>{{ field.help_text }}
-		{% elif field.name == 'ass' %}{{ field.label_tag }} {{ field }}  <br>{{ field.help_text }}
+		{% elif field.name == 'ass' %}{{ field }}{{ field.label_tag }}   <br>{{ field.help_text }}
         {% else %} {{ field.label_tag }} {{ field }}  {{ field.help_text }}
 		{% endif %}
     </div>

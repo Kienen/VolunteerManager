@@ -7,6 +7,10 @@ body {
 	
 }
 
+div {
+	max-width: 800px;
+	}
+
 $('[data-toggle="popover"]').popover({
     container: 'body'
 });

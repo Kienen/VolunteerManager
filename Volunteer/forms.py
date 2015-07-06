@@ -26,7 +26,8 @@ class VolunteerForm(forms.ModelForm):
     vexp_other = forms.CharField(label=mark_safe('If so, please specify.'), widget=forms.Textarea, required=False)
     super_powers = forms.CharField(label=mark_safe('What special super powers or skills you have? What skills would you like to learn more about?'), widget=forms.Textarea, required=False)
     jokes = forms.CharField(label=mark_safe('Questions? Comments? Favorite Joke?'), widget=forms.Textarea, required=False, help_text="How do you kill a circus? Go for the juggler.")
-
+    ass = forms.BooleanField(label ='Are you interested in taking on more responsibility than most volunteers to make your department run smoothly and YOUtopia better than ever?', required=False,  help_text="Some teams will be choosing the most dedicated, experienced volunteers to train as assistants to the leads. These super volunteers will receive more training and more responsibility. Not everyone is cut out for this position, but we're looking for the best of the best.")
+    
     class Meta:
         model = Volunteer
         fields = Volunteer.PUBLIC_FIELD_NAMES + Volunteer.AVAILABILITY_FIELD_NAMES
@@ -77,7 +78,7 @@ class RatingsForm(forms.Form):
     
     def __init__(self, *args, **kwargs):
         teams = kwargs.pop('teams')
-        super(RatingsForm, self).__init__()
+        super(RatingsForm, self).__init__(*args, **kwargs)
 
         for team in teams:
             self.fields[team.name] = forms.ChoiceField(label=team.name, 

@@ -9,3 +9,7 @@ body {
   background-color : #FF9900; 
 
 }
+
+div {
+	max-width: 800px;
+	}

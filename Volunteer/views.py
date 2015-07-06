@@ -1,27 +1,18 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, redirect#, get_or_create
-#from registration.backends.simple.views import RegistrationView
 from Volunteer.models import *
-from django.http import HttpResponse
-#from django.views.generic.edit import CreateView, UpdateView
-#from django.forms import ModelForm
-from guardian.shortcuts import get_objects_for_user
-#from django.contrib.auth.decorators import permission_required
-from django.contrib.auth.models import User, Group
-from guardian.shortcuts import assign_perm
-from django.contrib.auth.decorators import user_passes_test, permission_required
-#from django.views.generic.list import ListView
-#from django.forms.formsets import formset_factory
-from django.forms.models import modelformset_factory
 from Volunteer.forms import *
+from django.http import HttpResponse
 from django.contrib.auth import logout
-
+from django.contrib.auth.models import User, Group
+from django.contrib.auth.decorators import user_passes_test, permission_required
+from django.forms.models import modelformset_factory, inlineformset_factory
+from django.shortcuts import render, redirect
+from guardian.shortcuts import assign_perm, get_objects_for_user
 
 # Create your views here.
-#def islead(user)
-#    if useruser.groups.filter(name="leads").exists()
-
 def volunteer_create(request):
+    if request.user.groups.filter(name='leads').exists():
+        return redirect ('/team/')
   # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -56,20 +47,23 @@ def volunteer_create(request):
     return render(request, 'volunteer_form.html', {'form': list(form)})
  
 def rating(request):
+    if request.user.groups.filter(name='leads').exists():
+        return redirect ('/team/')
     teams = Team.objects.all()
-    volunteer = request.user.profile
+    try:
+        volunteer = request.user.profile
+    except:
+        redirect('/home/')
   # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = RatingsForm(request.POST, teams= teams)
-        # check whether it's valid:
-            # process the data in form.cleaned_data as required
-            #preferences =  form.save(commit=False)
-            #preferences.volunteer = request.user.profile
-            #preferences.save()
         volunteer.ratings.clear()
-        if request.POST.get('approved') == 'True':
-            volunteer.suggested_team = preferences.approved_team
+
+        if form['approved'].value() == True:
+            #print form['approved_team'].value()
+            volunteer.suggested_team = Team.objects.get(name= form['approved_team'].value())
+            #print form['approved_team'].value()
         else:
             for team in Team.objects.all():
                 if request.POST.get(team.name):
@@ -80,7 +74,6 @@ def rating(request):
  
     # if a GET (or any other method) we'll create a blank form
     else:
-
         form = RatingsForm(teams= teams)
 
     return render(request, 'rating_form.html', {
@@ -96,10 +89,10 @@ def home(request):
         return redirect(volunteer_create)
 
 
-
 def go_profile(request):
     return redirect('/home/')
     
+#Team Views   
 @user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")    
 def team_choose(request):
     teams = get_objects_for_user(user=request.user, perms='Volunteer.change_team', klass=Team)
@@ -107,9 +100,8 @@ def team_choose(request):
     
 @user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")
 def team_view(request, team_arg):
-    team_id = int(team_arg)
     try:
-        this_team = Team.objects.get(id=team_id)
+        this_team = Team.objects.get(id= int(team_arg))
     except:
         return redirect('/team/')
     if not request.user.has_perm('Volunteer.change_team', this_team):  
@@ -165,7 +157,13 @@ def suggest_view(request, team_arg):
                                                     'suggested_volunteer_list': suggested_volunteer_list,
                                                     })
  
- 
+
+@user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/") 
+def unclaimed_list(request):
+    volunteer_list = Volunteer.objects.filter(team__isnull = True, limbo= False)
+    return render (request, "unclaimed_list.html",  {
+                                                    'volunteer_list': volunteer_list,
+                                                    })
 @user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")                                               
 def unclaimed_view(request):
     VolunteerFormSet = modelformset_factory(Volunteer, form=ReadOnlyVolunteerSuggestForm, extra = 0)
@@ -210,8 +208,36 @@ def availability(request, team_arg):
     return render (request, "availability_view.html",  {'this_team': this_team,
                                                 'approved_volunteer_list': approved_volunteer_list,
                                                 })
+def logout_view(request):
+    logout(request)
 
-                                                
+@user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")    
+def volunteer_detail_view(request, vol_arg):
+    try:
+        vol_id = int(vol_arg)
+        volunteer= Volunteer.objects.get(id=vol_id)
+    except:
+        return redirect('/team/volunteers/')
+    
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = ReadOnlyVolunteerForm(request.POST, instance= volunteer)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            print 'valid'
+            volunteer.save()
+            return redirect('/team/volunteers/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = ReadOnlyVolunteerForm(instance= volunteer)
+        #formset = RatingsFormSet(instance= volunteer)
+        this_ratings = Rating.objects.filter(volunteer=volunteer)
+
+    return render(request, 'volunteer_detail.html', {'form': form, 'this_ratings':this_ratings})
+'''                                                
 @permission_required('Volunteer.add_team')                                            
 def initialize(request):
     #from Volunteer.models import Team
@@ -316,7 +342,8 @@ def passwordmassupdate(request):
                 'schwag': 'glitteringprizes',
                 'sales': 'coffeeteaorme',
                 'watergate': 'allthepresidentsmen',
-                'waldos': 'gottacatchemall',                }
+                'waldos': 'gottacatchemall',
+                }
     
     updated_list = 'Updated:'
     notupdated_list = 'Not Updated:'
@@ -333,6 +360,7 @@ def passwordmassupdate(request):
         leadgroup.save()    
         
         try: 
+            
             lead.set_password(PASS_DICT[this_name])
             lead.save()
 
@@ -341,6 +369,4 @@ def passwordmassupdate(request):
             notupdated_list= notupdated_list + " " + lead.username
             
     return HttpResponse(updated_list + "\a" + notupdated_list)
-    
-def logout_view(request):
-    logout(request)
+'''    

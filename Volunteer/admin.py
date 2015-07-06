@@ -16,10 +16,10 @@ class TeamAdmin(GuardedModelAdmin):
     fields = ['budget', 'name', 'description', 'visible']
     
 class VolunteerAdmin(admin.ModelAdmin):
-        readonly_fields = ['first_name','last_name',  'disability', 'attended_BM', 'v_YOUtopia', 'vexp_YOUtopia', 'v_other', 'vexp_other','super_powers','jokes','ratings']
+        readonly_fields = ['approved_by','first_name','last_name',  'disability', 'attended_BM', 'v_YOUtopia', 'vexp_YOUtopia', 'v_other', 'vexp_other','super_powers','jokes','ratings']
         fieldsets = [
-            (None,  {'fields': ['first_name','last_name', 'team', 'suggested_team', 'notes']}),
-            ('Information', {'fields': ['disability', 'attended_BM', 'v_YOUtopia', 'vexp_YOUtopia', 'v_other', 'vexp_other','super_powers','jokes'], 'classes': ['collapse']}),
+            (None,  {'fields': ['first_name','last_name', 'team', 'suggested_team', 'notes', 'limbo']}),
+            ('Information', {'fields': ['approved_by', 'disability', 'attended_BM', 'v_YOUtopia', 'vexp_YOUtopia', 'v_other', 'vexp_other','super_powers','jokes'], 'classes': ['collapse']}),
             ('Availability', {'fields': ['avail_tu','avail_w' ,'avail_th', 'avail_f','avail_sa' ,'avail_su', 'avail_m'], 'classes': ['collapse']}),
             ]
 

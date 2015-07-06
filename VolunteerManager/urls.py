@@ -8,18 +8,19 @@ from django.contrib.auth.decorators import login_required
 urlpatterns = patterns('',
     url(r'^', include('favicon.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^initialize/', views.initialize),
-    url(r'^passupdate/', views.passwordmassupdate),
+    #url(r'^initialize/', views.initialize),
+    #url(r'^passupdate/', views.passwordmassupdate),
     
     #Team Leads
     url(r'^team/$', views.team_choose),
     url(r'^team/(?P<team_arg>\d{1,})/$', views.team_view),
     url(r'^team/(?P<team_arg>\d{1,})/suggest$', views.suggest_view),
     url(r'^team/(?P<team_arg>\d{1,})/email$', views.email_view),
-    url(r'^team/volunteers/$', views.unclaimed_view),
-    #url(r'^team/volunteers/(?P<vol_arg>\d{1,})/$', views.volunteer_detail_view),
+    url(r'^team/volunteers/$', views.unclaimed_list),
+    url(r'^team/volunteers/(?P<vol_arg>\d{1,})/$', views.volunteer_detail_view, name='volunteer_detail'),
     url(r'^team/login/$', 'django.contrib.auth.views.login', { 'template_name': 'team_login.html'}),
     url(r'^team/(?P<team_arg>\d{1,})/availability$', views.availability),
+    
  
     
     #Volunteer Profiles

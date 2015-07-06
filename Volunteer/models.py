@@ -63,7 +63,7 @@ class Volunteer(models.Model):
     vexp_other = models.CharField('If YES, please specify.', max_length=254, blank = True)
     super_powers = models.CharField('Super Powers', max_length=254, blank = True, help_text = "What special super powers or skills you have? What skills would you like to learn more about?")
     jokes = models.CharField('Questions? Comments? Favorite Joke?', max_length=254, blank = True, help_text="How do you kill a circus? Go for the juggler.")
-    ass = models.BooleanField('Are you interested in taking on more responsibility than most volunteers to make your department run smoothly and YOUtopia better than ever?', default=False, blank=True,  help_text="Some teams will be choosing the most dedicated, experienced volunteers to train as assistants to the leads. These super volunteers will receive more training and more responsibility. Not everyone is cut out for this position, but we're looking for the best of the best.")
+    ass = models.BooleanField('Super Volunteer', default=False, blank=True,  help_text="Some teams will be choosing the most dedicated, experienced volunteers to train as assistants to the leads. These super volunteers will receive more training and more responsibility. Not everyone is cut out for this position, but we're looking for the best of the best.")
  
     #Availabiliity
     avail_tu = models.BooleanField('Tuesday, October 13th',default=True, blank=True)
@@ -97,6 +97,8 @@ class Volunteer(models.Model):
 
 
 class Rating(models.Model):
+    class Meta:
+        ordering = ['-rating']
     RATING_CHOICES = tuple((x, x) for x in range(1,6))
     volunteer = models.ForeignKey(Volunteer)
     team = models.ForeignKey(Team)
