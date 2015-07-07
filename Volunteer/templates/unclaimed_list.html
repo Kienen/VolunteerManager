@@ -9,7 +9,7 @@
 <ul>
 	<form method="POST" >{% csrf_token %}
 {% for volunteer in volunteer_list %}
-	<li><a href="{% url 'Volunteer.views.volunteer_detail_view' volunteer.id %}"<h4>  {% if volunteer.playa_name %} "{{ volunteer.playa_name }}" : {% endif %} {{ volunteer.first_name }}  {{ volunteer.last_name }} </h4></a>
+	<li><a href="{% url 'Volunteer.views.volunteer_detail_view' volunteer.id %}"<h4> {{ volunteer.first_name }}{% if volunteer.playa_name %} "{{ volunteer.playa_name }}"{% endif %} {{ volunteer.last_name }} </h4></a>
 
 
 

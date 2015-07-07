@@ -11,6 +11,7 @@ from guardian.shortcuts import assign_perm, get_objects_for_user
 
 # Create your views here.
 def volunteer_create(request):
+    #Redirect if user is a lead
     if request.user.groups.filter(name='leads').exists():
         return redirect ('/team/')
   # if this is a POST request we need to process the form data
@@ -47,13 +48,16 @@ def volunteer_create(request):
     return render(request, 'volunteer_form.html', {'form': list(form)})
  
 def rating(request):
+    #Redirect if user is lead or hasn't created a profile.
     if request.user.groups.filter(name='leads').exists():
         return redirect ('/team/')
-    teams = Team.objects.all()
     try:
         volunteer = request.user.profile
     except:
         redirect('/home/')
+        
+    teams = Team.objects.filter(visible= True)
+    teams = teams.objects.exclude(name='Rangers')
   # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -63,7 +67,7 @@ def rating(request):
         if form['approved'].value() == True:
             #print form['approved_team'].value()
             volunteer.suggested_team = Team.objects.get(name= form['approved_team'].value())
-            #print form['approved_team'].value()
+            volunteer.approved_by = form['approved_by'].value()
         else:
             for team in Team.objects.all():
                 if request.POST.get(team.name):
@@ -164,19 +168,15 @@ def unclaimed_list(request):
     return render (request, "unclaimed_list.html",  {
                                                     'volunteer_list': volunteer_list,
                                                     })
+                                                    
 @user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")                                               
 def unclaimed_view(request):
-    VolunteerFormSet = modelformset_factory(Volunteer, form=ReadOnlyVolunteerSuggestForm, extra = 0)
-    #volunteer_list = Volunteer.objects.all()#filter(team__isnull = True)
   # if this is a POST request we need to process the form data
     if request.method == 'POST':
         formset = VolunteerFormSet(request.POST)
         if formset.is_valid():
-            print "saved"
             instances = formset.save()
             return redirect ('/team/volunteers/')
-        else:
-            print 'unsaved'
     # if a GET (or any other method) we'll create a blank form
     else:
         formset = VolunteerFormSet(queryset=Volunteer.objects.filter(team__isnull = True, limbo= False))
@@ -237,6 +237,7 @@ def volunteer_detail_view(request, vol_arg):
         this_ratings = Rating.objects.filter(volunteer=volunteer)
 
     return render(request, 'volunteer_detail.html', {'form': form, 'this_ratings':this_ratings})
+
 '''                                                
 @permission_required('Volunteer.add_team')                                            
 def initialize(request):

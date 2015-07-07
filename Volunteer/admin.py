@@ -24,7 +24,7 @@ class VolunteerAdmin(admin.ModelAdmin):
             ]
 
         inlines = [RatingInline]
-        list_filter = ['suggested_team', 'team']
+        list_filter = ['suggested_team', 'team', 'limbo']
         
 admin.site.register(Volunteer, VolunteerAdmin)
 admin.site.register(Team, TeamAdmin)

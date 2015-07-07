@@ -88,16 +88,20 @@ class RatingsForm(forms.Form):
 RatingsFormSet= modelformset_factory
 
 class VolunteerOfficeForm(forms.ModelForm):
+vexp_YOUtopia = forms.CharField(widget=forms.Textarea)
+    vexp_other = forms.CharField(widget=forms.Textarea)
+    super_powers = forms.CharField(widget=forms.Textarea)
+    jokes = forms.CharField(label=mark_safe(widget=forms.Textarea)
     class Meta:
         model = Volunteer
         fields = '__all__'
         exclude = ['user', 'ratings']
         
 class ReadOnlyVolunteerForm (ReadOnlyFieldsMixin, VolunteerOfficeForm):
-    readonly_fields = Volunteer.PUBLIC_FIELD_NAMES + Volunteer.AVAILABILITY_FIELD_NAMES 
+    readonly_fields = Volunteer.PUBLIC_FIELD_NAMES + Volunteer.AVAILABILITY_FIELD_NAMES + ['approved_by']
     
 #RatingsFormSet = inlineformset_factory(Team, Rating, extra=0)
-
+VolunteerFormSet = modelformset_factory(Volunteer, form=ReadOnlyVolunteerSuggestForm, extra = 0)
 
     
 '''

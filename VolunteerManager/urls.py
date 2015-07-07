@@ -1,9 +1,9 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from registration.backends import simple
 from Volunteer import views
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required 
+from registration.backends import simple
 
 urlpatterns = patterns('',
     url(r'^', include('favicon.urls')),
@@ -34,7 +34,7 @@ urlpatterns = patterns('',
     url(r'^accounts/register/complete/$', views.volunteer_create),
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^$', 'django.contrib.auth.views.login',  {'template_name': 'Volunteer/registration/login.html'}),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'Volunteer/registration/logout.html'}),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
 
 
     #Password setting urls with built-in templates

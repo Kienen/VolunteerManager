@@ -16,6 +16,7 @@
                 </li>
 				{% if this_team %}
 				<li><h2><a href="{{this_team.get_absolute_url}}">{{this_team}}</a></h2></li>
+				<li><a href="{{this_team.get_absolute_url}}">Approved Volunteers</a></li>
 				<li><a href="{{this_team.get_absolute_url}}/suggest">Suggested Volunteers</a></li>
 				<li><a href="{{this_team.get_absolute_url}}/email">Phone/Email List</a></li>
 				<li><a href="{{this_team.get_absolute_url}}/availability">Availability</a></li>
@@ -25,6 +26,7 @@
                 {% block sidebar %} {% endblock %}
 				<li><a href="/team/volunteers/">All Unclaimed Volunteers</a></li>
 				<li><a href="/password/">Change password</a></li>
+				<li><a href="/logout/">Log Out</a></li>
             </ul>
         </div>
         <!-- /#sidebar-wrapper -->

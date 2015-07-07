@@ -42,7 +42,7 @@ $(document).ready(function() {
 	{% for field in form|slice:"18:19" %}
     <div class="{{field.html_name}}{% if field.errors %} FieldError{%endif%}">
         {{ field.errors }}
-        {{ field.label_tag }} {{ field }} <br>  {{ field.help_text }}
+        {{ field }}{{ field.label_tag }}<br>{{ field.help_text }}
 
     </div>
 {% endfor %}
@@ -54,6 +54,7 @@ $(document).ready(function() {
     </div>
 {% endfor %}
     <button type="submit" class="btn btn-primary">Next</button>
+	Please continue to the next page to rate your desired teams.
 </form>
 
 {% endblock %} 
