@@ -7,8 +7,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
 #location=1 #'Local'
-location=2 #'Staging'
-#location=3 #'Production'
+#location=2 #'Staging'
+location=3 #'Production'
 
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -110,7 +110,6 @@ if location== 1: #Local
 elif location== 2:  #Staging   
     DEBUG = True
     TEMPLATE_DEBUG = True
-    #heroku
     import dj_database_url
     DATABASES = {}
     DATABASES['default'] = dj_database_url.config() 
@@ -119,7 +118,6 @@ elif location== 2:  #Staging
 elif location==3: #'production':
     DEBUG = False
     TEMPLATE_DEBUG = False
-    #heroku
     import dj_database_url
     DATABASES = {}
     DATABASES['default'] = dj_database_url.config() 

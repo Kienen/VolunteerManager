@@ -16,12 +16,14 @@ urlpatterns = patterns('',
     url(r'^team/(?P<team_arg>\d{1,})/$', views.team_view),
     url(r'^team/(?P<team_arg>\d{1,})/suggest$', views.suggest_view),
     url(r'^team/(?P<team_arg>\d{1,})/email$', views.email_view),
-    url(r'^team/volunteers/$', views.unclaimed_list),
-    url(r'^team/volunteers/(?P<vol_arg>\d{1,})/$', views.volunteer_detail_view, name='volunteer_detail'),
-    url(r'^team/login/$', 'django.contrib.auth.views.login', { 'template_name': 'team_login.html'}),
+    url(r'^team/(?P<team_arg>\d{1,})/volunteers/$', views.unclaimed_list, name='team_unclaimed_list'),
+    url(r'^team/(?P<team_arg>\d{1,})/volunteers/(?P<vol_arg>\d{1,})/$', views.volunteer_detail_view, name='team_volunteer_detail'),
     url(r'^team/(?P<team_arg>\d{1,})/availability$', views.availability),
     
- 
+    url(r'^team/volunteers/$', views.unclaimed_list, name='unclaimed_list'),
+    url(r'^team/volunteers/(?P<vol_arg>\d{1,})/$', views.volunteer_detail_view, name='volunteer_detail'),
+    url(r'^team/login/$', 'django.contrib.auth.views.login', { 'template_name': 'team_login.html'}),
+
     
     #Volunteer Profiles
     url(r'^home/$', login_required(views.home)),

@@ -1,16 +1,14 @@
 {% extends "staffbase.html" %}
 
-{% block content_title %} <h1>{{ this_team }} Volunteer List</h1> {% endblock %}
+{% block content_title %} <h1>{{ this_team }} Suggested Volunteers</h1> {% endblock %}
 
 {% block content %}
 
-
-<h3>Suggested Volunteers</h3>
 <ul>
 	<form method="POST" >{% csrf_token %}
 {% for volunteer in suggested_volunteer_list %}
-	<li><a href="{% url 'Volunteer.views.volunteer_detail_view' volunteer.id %}"<h4> {{ volunteer.first_name }}{% if volunteer.playa_name %} "{{ volunteer.playa_name }}"{% endif %} {{ volunteer.last_name }} </h4></a>
-
+	<li><a href="{% url 'Volunteer.views.volunteer_detail_view' this_team.id volunteer.id %}"<h3> {{ volunteer.first_name }}{% if volunteer.playa_name %} "{{ volunteer.playa_name }}"{% endif %} {{ volunteer.last_name }} </h3></a>
+<br>
 <input type="radio" name="{{ volunteer.id }}" value="" checked>No Change
 <input type="radio" name="{{ volunteer.id }}" value="Accept">Accept
 <input type="radio" name="{{ volunteer.id }}" value="Reject">Reject

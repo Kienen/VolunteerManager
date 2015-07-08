@@ -57,7 +57,7 @@ def rating(request):
         redirect('/home/')
         
     teams = Team.objects.filter(visible= True)
-    teams = teams.objects.exclude(name='Rangers')
+    teams = teams.exclude(name='Rangers')
   # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -135,11 +135,12 @@ def team_view(request, team_arg):
                                                     
 @user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")
 def suggest_view(request, team_arg):
-    team_id = int(team_arg)
+    
     try:
-        this_team = Team.objects.get(id=team_id)
+        this_team = Team.objects.get(id=int(team_arg))
     except:
         return redirect('/team/')
+        
     suggested_volunteer_list = Volunteer.objects.filter(suggested_team = this_team)
   # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -163,12 +164,17 @@ def suggest_view(request, team_arg):
  
 
 @user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/") 
-def unclaimed_list(request):
+def unclaimed_list(request, team_arg= None):
+    try:
+        this_team = Team.objects.get(id=int(team_arg))
+    except:
+        this_team = None
+        
     volunteer_list = Volunteer.objects.filter(team__isnull = True, limbo= False)
-    return render (request, "unclaimed_list.html",  {
+    return render (request, "unclaimed_list.html",  {'this_team': this_team,
                                                     'volunteer_list': volunteer_list,
                                                     })
-                                                    
+'''                                                    
 @user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")                                               
 def unclaimed_view(request):
   # if this is a POST request we need to process the form data
@@ -176,13 +182,13 @@ def unclaimed_view(request):
         formset = VolunteerFormSet(request.POST)
         if formset.is_valid():
             instances = formset.save()
-            return redirect ('/team/volunteers/')
+            return redirect ('views.unclaimed_list')
     # if a GET (or any other method) we'll create a blank form
     else:
         formset = VolunteerFormSet(queryset=Volunteer.objects.filter(team__isnull = True, limbo= False))
     return render (request, "suggest.html",  {'formset':formset
                                                     })
-                                                    
+'''                                                    
                                                     
 @user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")                                              
 def email_view(request, team_arg):
@@ -208,16 +214,22 @@ def availability(request, team_arg):
     return render (request, "availability_view.html",  {'this_team': this_team,
                                                 'approved_volunteer_list': approved_volunteer_list,
                                                 })
-def logout_view(request):
-    logout(request)
 
 @user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")    
-def volunteer_detail_view(request, vol_arg):
+def volunteer_detail_view(request, vol_arg, team_arg= None):
+    try:
+        this_team = Team.objects.get(id=int(team_arg))
+    except:
+        this_team = None
+        
     try:
         vol_id = int(vol_arg)
         volunteer= Volunteer.objects.get(id=vol_id)
     except:
-        return redirect('/team/volunteers/')
+        if this_team:
+            return redirect (this_team.get_absolute_url() )
+        else:
+            return redirect('/team/volunteers/')
     
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -226,17 +238,21 @@ def volunteer_detail_view(request, vol_arg):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-            print 'valid'
             volunteer.save()
-            return redirect('/team/volunteers/')
-
+            #return redirect('/team/volunteers/')
+            if this_team:
+                return redirect (this_team.get_absolute_url() + '/volunteers/')
+            else:
+                return redirect('/team/volunteers/')
     # if a GET (or any other method) we'll create a blank form
     else:
         form = ReadOnlyVolunteerForm(instance= volunteer)
         #formset = RatingsFormSet(instance= volunteer)
         this_ratings = Rating.objects.filter(volunteer=volunteer)
 
-    return render(request, 'volunteer_detail.html', {'form': form, 'this_ratings':this_ratings})
+    return render(request, 'volunteer_detail.html', {'form': form, 
+                                                     'this_ratings':this_ratings,
+                                                     'this_team': this_team, })
 
 '''                                                
 @permission_required('Volunteer.add_team')                                            
