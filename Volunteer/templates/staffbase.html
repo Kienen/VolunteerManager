@@ -20,6 +20,7 @@
 				<li><a href="{{this_team.get_absolute_url}}/suggest">Suggested Volunteers</a></li>
 				<li><a href="{{this_team.get_absolute_url}}/email">Phone/Email List</a></li>
 				<li><a href="{{this_team.get_absolute_url}}/availability">Availability</a></li>
+				<li><a href="{{this_team.get_absolute_url}}/interested">Interested Volunteers</a></li>
 				<!--<li><a href="{{this_team.get_absolute_url}}/Description">Change Team Information</a></li> -->
 				<li><a href="{% url 'team_unclaimed_list' this_team.id %}">All Unclaimed Volunteers</a></li>
 				{% else %}<li><a href="/team/"><h2>Home</h2></a></li>
@@ -51,17 +52,19 @@
 							{% block pretitle %}{% endblock %}
 							{% block content_title %}<h1>YOUtopia 2015 Volunteer Management</h1>{% endblock %}
 							{% block content %}{% endblock %}
-							{% block postcontent %} {% endblock%}
+							
 							<br class="clear" />
 						</div>
 						<!-- END Content -->
-						
-						 {% block footer %}<div id="footer"><a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a></div>{% endblock %}   
-                        
+						<div id="footer">
+						 {% block footer %}{% endblock %}   
+                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a></div>
                     </div>
                 </div>
             </div>
-        </div>
+			{% block postcontent %} {% endblock%}
+		
+		</div>
         <!-- /#page-content-wrapper -->
 
     </div>

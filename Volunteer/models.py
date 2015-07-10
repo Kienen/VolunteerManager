@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
 
 # Create your models here.
 
@@ -39,7 +40,8 @@ class Volunteer(models.Model):
         'FB_user_name', 'diet', 'diet_restriction', 'disability', 'attended_BM', 'v_YOUtopia', 'vexp_YOUtopia', 'v_other', 'vexp_other', 'super_powers', 'jokes', 'ass']
     
     AVAILABILITY_FIELD_NAMES = ['avail_tu','avail_w' ,'avail_th', 'avail_f','avail_sa' ,'avail_su', 'avail_m']
-
+    PHONE_REGEX = RegexValidator(regex=r'^\d{3}-\d{3}-\d{4}x?\d{0,5}$', message="Phone number must be entered in the format: '999-999-9999' or '999-999-9999x123'. ")
+    
     user = models.OneToOneField(User, related_name="profile", null=True)
     
     #User input fields
@@ -48,9 +50,9 @@ class Volunteer(models.Model):
     email = models.CharField(max_length=200)
     playa_name = models.CharField(max_length=30, blank=True)
     birthdate = models.DateField('Birth Date', help_text="mm/dd/yyyy")
-    phone = models.CharField(max_length=20, help_text="'999-999-9999'") 
+    phone = models.CharField(max_length=20, validators=[PHONE_REGEX], help_text="'999-999-9999'") 
     emergency_contact = models.CharField(max_length=30)
-    emergency_phone = models.CharField(max_length=20, help_text="'999-999-999'") 
+    emergency_phone = models.CharField(max_length=20, validators=[PHONE_REGEX], help_text="'999-999-999'") 
     FB_user_name = models.CharField('Facebook User Name', max_length=30, blank=True, help_text='(http://www.facebook.com/--->USER NAME<--)')
     diet = models.CharField('Dietary Preference', max_length=30, choices = DIET_CHOICES, default='Omnivore', help_text='Please choose the answer that *best* fits your dietary lifestyle.')
     diet_restriction = models.CharField('Specific dietary restriction', max_length=254, blank=True, 

@@ -13,14 +13,15 @@ $(document).ready(function(){
 
 
 <h3>Approved Volunteers </h3>
+<table>
 
-<ul>
 {% for volunteer in approved_volunteer_list %}
-    <li>{{ volunteer.first_name }} {% if volunteer.playa_name %}"{{ volunteer.playa_name }}" {% endif %}{{ volunteer.last_name }} {{volunteer.phone }} {{volunteer.email}}  </li>
+    <tr><td>{{ volunteer.first_name }} {% if volunteer.playa_name %}"{{ volunteer.playa_name }}" {% endif %}{{ volunteer.last_name }} </td><td>{{volunteer.phone }} </td><td>{{volunteer.email}}</td></tr>
 {% empty %}
     <li>No volunteers yet.</li>
 {% endfor %}
-</ul>
+
+</table>
 {% endblock %}
 
 {% block footer %}

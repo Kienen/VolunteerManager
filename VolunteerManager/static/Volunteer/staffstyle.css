@@ -9,7 +9,12 @@ body {
 
 div {
 	max-width: 1050px;
-	}
+}
+	
+table {
+    border-collapse: separate;
+    border-spacing: 10px 0px;
+}
 
 $('[data-toggle="popover"]').popover({
     container: 'body'

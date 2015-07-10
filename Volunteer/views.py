@@ -10,6 +10,22 @@ from django.shortcuts import render, redirect
 from guardian.shortcuts import assign_perm, get_objects_for_user
 
 # Create your views here.
+def checklist(name="", phone="", email=""):
+    list_phone_numbers=['619-366-3665','619-663-8909','619-709-1463','858-775-1054','808-554-5589','619-990-2595','858-342-6634','614-316-5860','760-580-3840','714-450-0021','818-693-9114','858-412-9911','619-300-0181','530-240-5423','484-390-1447','801-674-6207','760-450-6093','562-212-2729','818-200-7771','818-425-1587','760-271-5617','858-705-0133','714-589-0121','805-886-6422','425-516-4920','626-627-3171','858-215-0056','949-228-7258','714-273-6664','714-681-8253','207-286-7905']
+    list_emails=['josephchamberlain194@gmail.com','Mrmeetupman@gmail.com','dj_alanb@hotmail.com','Savagedesignbeast@gmail.com','Awilding27@gmail.com','brjohnson1@gmail.com','medmiston42@gmail.com','p_wahlrab@yahoo.com','rhiannonbetancourt@gmail.com','don@norrisphoto.com','gunnar.poplawski@gmail.com','valentino.gantz@gmail.com','nakao2163@gmail.com','shieldsmoose@gmail.com','jeremyisshopping@gmail.com','Grhyse@gmail.com','splatgfx@gmail.com','Stevilace@Yahoo. com','sepulvedav@aol.com','mcshrader@gmail.com','genie13s@gmail.com','jinglesjacquelyn@gmail.com','codyavellon@gmail.com','joshlehet84@gmail.com','martinjeramy.a@gmail.com','melissacantstopthebeat@gmail.com','sheytoonak88@gmail.com','Djgwhat@gmail.com','Natashiagubec@me.com','meaton2755@yahoo.com']
+    list_names=['cody avellon','yasi balbas','rhiannon betancourt','alan blanchard','joseph chamberlain','gene rhyse davies','russel deeney','jason deyarmin','molly eaton','michael edmiston','donald norris fessman','valentino gantz','natashia gube','ben johnson','chris latall','josh lehet','jeramy martin','sydney mason','nathan nakao','tina-merrie newman','gunnar poplawski','steve roberts','melissa robertson','veronica sepulveda','rebecca shields moose','matthew shrader','georgene smith','pat wahlrab','j. sebastian wasser','james wasser','andrew wilding','jeremy wojciechowski','jacquelyn yauch']
+    
+    if name and name in list_names:
+        return True
+ 
+    if phone and phone in list_phone_numbers:
+        return True
+
+    if email and email in list_emails:
+        return True
+
+    return False
+    
 def volunteer_create(request):
     #Redirect if user is a lead
     if request.user.groups.filter(name='leads').exists():
@@ -31,12 +47,13 @@ def volunteer_create(request):
                     profile.email = request.user.email
                 except:
                     profile.email = "No Email Available"
+                p_name= profile.first_name + " " + profile.last_name
+                p_name= p_name.lower()
+                if checklist(name=p_name, email=profile.email, phone= profile.phone):  
+                    profile.limbo= True
                 profile.save()
                 # redirect to a new URL:
-                if profile.approved:
-                    redirect ('/home/')
-                else:
-                    return redirect('/ratings')
+                return redirect('/ratings')
     # if a GET (or any other method) we'll create a blank form
     else:
         try:
@@ -189,12 +206,26 @@ def unclaimed_view(request):
     return render (request, "suggest.html",  {'formset':formset
                                                     })
 '''                                                    
-                                                    
+@user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")   
+def interest_view(request, team_arg):
+    try:
+        this_team = Team.objects.get(id=int(team_arg))
+    except:
+        return redirect('/team/')
+        
+    rating_list = Rating.objects.filter(team= this_team)
+    rating_list = rating_list.filter(id__gt=3)
+    volunteer_list = []
+    for rating in rating_list:
+        volunteer_list.append(rating.volunteer)
+    return render (request, "unclaimed_list.html",  {'this_team': this_team,
+                                                    'volunteer_list': volunteer_list,
+                                                    })
+                                                        
 @user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")                                              
 def email_view(request, team_arg):
-    team_id = int(team_arg)
     try:
-        this_team = Team.objects.get(id=team_id)
+        this_team = Team.objects.get(id= int(team_arg))
     except:
         return redirect('/team/')
     approved_volunteer_list = Volunteer.objects.filter(team=this_team)
@@ -225,31 +256,32 @@ def volunteer_detail_view(request, vol_arg, team_arg= None):
     try:
         vol_id = int(vol_arg)
         volunteer= Volunteer.objects.get(id=vol_id)
+        this_ratings = Rating.objects.filter(volunteer=volunteer)
     except:
         if this_team:
-            return redirect (this_team.get_absolute_url() )
+            return redirect (this_team.get_absolute_url() + '/volunteers/' )
         else:
             return redirect('/team/volunteers/')
     
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        form = ReadOnlyVolunteerForm(request.POST, instance= volunteer)
+        form = VolunteerMiniForm(request.POST, instance= volunteer)
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
             volunteer.save()
-            #return redirect('/team/volunteers/')
             if this_team:
-                return redirect (this_team.get_absolute_url() + '/volunteers/')
+                return redirect ('team_volunteer_detail', vol_arg=vol_arg, team_arg=team_arg )
             else:
-                return redirect('/team/volunteers/')
+                return redirect('volunteer_detail', vol_arg=vol_arg )
     # if a GET (or any other method) we'll create a blank form
     else:
         form = ReadOnlyVolunteerForm(instance= volunteer)
         #formset = RatingsFormSet(instance= volunteer)
-        this_ratings = Rating.objects.filter(volunteer=volunteer)
+        
 
+        
     return render(request, 'volunteer_detail.html', {'form': form, 
                                                      'this_ratings':this_ratings,
                                                      'this_team': this_team, })

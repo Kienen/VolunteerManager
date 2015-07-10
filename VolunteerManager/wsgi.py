@@ -9,7 +9,7 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "VolunteerManager.settings")
 
 from django.core.wsgi import get_wsgi_application
-location=3
+from settings import location
 
 if location==1:
     application = get_wsgi_application()

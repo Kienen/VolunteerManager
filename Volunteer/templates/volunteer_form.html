@@ -47,6 +47,9 @@ $(document).ready(function() {
     </div>
 {% endfor %}
 <h3>Availability</h3>
+<p>All volunteers will be required to work at least two days during the event (Thurs-Sun) unless prior arrangements have been made with your department head. Greater availability will directly affect your chance to be selected for a volunteer position.</p>
+
+
    {% for field in form|slice:"19:" %}
     <div class="{{field.html_name}}">
         {{ field.errors }}

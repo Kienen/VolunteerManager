@@ -8,7 +8,7 @@
 	<form method="POST" >{% csrf_token %}
 {% for volunteer in suggested_volunteer_list %}
 	<li><a href="{% url 'Volunteer.views.volunteer_detail_view' this_team.id volunteer.id %}"<h3> {{ volunteer.first_name }}{% if volunteer.playa_name %} "{{ volunteer.playa_name }}"{% endif %} {{ volunteer.last_name }} </h3></a>
-<br>
+<br>{% if volunteer.ass %} This Volunteer has requested extra responsibility.<br>{%endif%}
 <input type="radio" name="{{ volunteer.id }}" value="" checked>No Change
 <input type="radio" name="{{ volunteer.id }}" value="Accept">Accept
 <input type="radio" name="{{ volunteer.id }}" value="Reject">Reject
@@ -20,6 +20,7 @@
 		<li>Attended a Burning Man event before? {{ volunteer.attended_BM }}</li>
 		{% if  volunteer.v_YOUtopia %} <li> YOUtopia Experience: </li> <p>{{volunteer.vexp_YOUtopia}} </p>{% endif %}
 		{% if volunteer.v_other %} <li> Other Festival Experience: </li> <p> {{volunteer.vexp_other}} </p>{% endif %}
+		
 		<li>Super Powers:</li><p> {{ volunteer.super_powers }} </p>
 		<li>Comments: {{ volunteer.jokes }}</li>
 		<li>Notes: {{ volunteer.notes }} </li>

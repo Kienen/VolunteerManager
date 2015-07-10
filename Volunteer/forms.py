@@ -103,7 +103,15 @@ class ReadOnlyVolunteerForm (ReadOnlyFieldsMixin, VolunteerOfficeForm):
 #RatingsFormSet = inlineformset_factory(Team, Rating, extra=0)
 VolunteerFormSet = modelformset_factory(Volunteer, form=ReadOnlyVolunteerSuggestForm, extra = 0)
 
-    
+class VolunteerMiniForm(forms.ModelForm):
+    class Meta:
+        model= Volunteer
+        fields = ['suggested_team','team', 'has_ticket','scheduled','volunteer_rating','notes','limbo'] 
+        
+    def __init__(self, *args, **kwargs):
+        super(VolunteerMiniForm, self).__init__(*args, **kwargs)
+        for name, field in self.fields.iteritems():
+            field.required = False
 '''
 class SuggestForm(forms.Form):
     def __init__(self, *args, **kwargs):

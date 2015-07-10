@@ -9,7 +9,8 @@
 
 <ul>
 {% for volunteer in approved_volunteer_list %}
-    <li><button type="button" class="btn btn-xs btn-danger glyphicon glyphicon-ban-circle" data-toggle="modal" data-target="#{{volunteer.id}}"></button> <a href="{% url 'Volunteer.views.volunteer_detail_view' volunteer.id %}">{{ volunteer.first_name }} {% if volunteer.playa_name %} "{{ volunteer.playa_name }}" {% endif %}{{ volunteer.last_name }}</a>  </li>
+    <li><button type="button" class="btn btn-xs btn-danger glyphicon glyphicon-ban-circle" data-toggle="modal" data-target="#{{volunteer.id}}"></button> 
+	<a href="{% url 'Volunteer.views.volunteer_detail_view' this_team.id volunteer.id %}"<h3> {{ volunteer.first_name }}{% if volunteer.playa_name %} "{{ volunteer.playa_name }}"{% endif %} {{ volunteer.last_name }} </h3></a>  </li>
 {% empty %}
     <li>No volunteers yet.</li>
 {% endfor %}
