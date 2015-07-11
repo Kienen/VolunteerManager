@@ -7,8 +7,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
 # location=1 #'Local'
-location=2 #'Staging'
-# location=3 #'Production'
+# location=2 #'Staging'
+location=3 #'Production'
 
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
