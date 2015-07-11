@@ -6,31 +6,8 @@
 <ul>
 	<form method="POST" >{% csrf_token %}
 {% for volunteer in volunteer_list %}
-	{% if this_team %}
-	<li><a href="{% url 'Volunteer.views.volunteer_detail_view' this_team.id volunteer.id %}"<h3 class="lead"> {{ volunteer.first_name }}{% if volunteer.playa_name %} "{{ volunteer.playa_name }}"{% endif %} {{ volunteer.last_name }} </h3></a>
-	{% else %}
-	<li><a href="{% url 'Volunteer.views.volunteer_detail_view' volunteer.id %}"<h3 class="lead"> {{ volunteer.first_name }}{% if volunteer.playa_name %} "{{ volunteer.playa_name }}"{% endif %} {{ volunteer.last_name }} </h3></a>
-	{%endif%}
-	<ul>
-		{% if volunteer.ass %} <li>This Volunteer has requested extra responsibility.</li>{%endif%}
-		<li><h4>Birthdate:</h4> {{ volunteer.birthdate }}
-		<li><h4>Disability:</h4> {{ volunteer.disability  }} </li>
-		<li><h4>Attended a Burning Man event before?</h4> {{ volunteer.attended_BM }}</li>
-		{% if  volunteer.v_YOUtopia %} <li> <h4>YOUtopia Experience:</h4> </li> <p>{{volunteer.vexp_YOUtopia}} </p>{% endif %}
-		{% if volunteer.v_other %} <li> <h4>Other Festival Experience:</h4> </li> <p> {{volunteer.vexp_other}} </p>{% endif %}
-		<li><h4>Super Powers:</h4></li><p> {{ volunteer.super_powers }} </p>
-		<li><h4>Comments:</h4> {{ volunteer.jokes }}</li>
-		<li><h4>Notes:</h4> {{ volunteer.notes }} </li>
-		{% if volunteer.preferences2015.avail_tu %}<li>Available Tuesday, October 13th {% endif %}</li>
-		{% if volunteer.preferences2015.avail_w %}<li>Available Wednesday, October 14th {% endif %}</li>
-		{% if volunteer.preferences2015.avail_th %}<li>Available Thursday, October 15th {% endif %}</li>
-		{% if volunteer.preferences2015.avail_f %}<li>Available Friday, October 16th {% endif %}</li>
-		{% if volunteer.preferences2015.avail_sa %}<li>Available Saturday, October 17th {% endif %}</li>
-		{% if volunteer.preferences2015.avail_su %}<li>Available Sunday, October 18th {% endif %}</li>
-		{% if volunteer.preferences2015.avail_m %}<li>Available Monday, October 19th {% endif %}</li>
-
-	</ul></li>
-	
+	<h3>{% include "volunteer_name.html" %}</h3>
+	{% include "volunteer_info.html" %}
 {% empty %}
     <li>No volunteers yet.</li>
 {% endfor %}

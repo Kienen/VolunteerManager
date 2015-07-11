@@ -158,7 +158,7 @@ def suggest_view(request, team_arg):
     except:
         return redirect('/team/')
         
-    suggested_volunteer_list = Volunteer.objects.filter(suggested_team = this_team)
+    suggested_volunteer_list = Volunteer.objects.filter(suggested_team = this_team, limbo= False)
   # if this is a POST request we need to process the form data
     if request.method == 'POST':
         for volunteer in suggested_volunteer_list:
@@ -218,9 +218,9 @@ def interest_view(request, team_arg):
     volunteer_list = []
     for rating in rating_list:
         volunteer_list.append(rating.volunteer)
-    return render (request, "unclaimed_list.html",  {'this_team': this_team,
-                                                    'volunteer_list': volunteer_list,
-                                                    })
+    return render (request, "interested_list.html",  {'this_team': this_team,
+                                                      'volunteer_list': volunteer_list,
+                                                      })
                                                         
 @user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")                                              
 def email_view(request, team_arg):

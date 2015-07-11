@@ -34,9 +34,9 @@ $(document).ready(function(){
 
 <div class="container">
   <a href="#" data-html="true" data-toggle="popover" title="Paste into a text file to import into your favorite address book" data-content="
-  First Name, Last Name, Nickname, Phone#,Email<br>
+  First Name, Last Name, Nickname, Phone#,Group Membership,Email<br>
   {% for volunteer in approved_volunteer_list %}
-  {{ volunteer.first_name }},{{ volunteer.last_name }},{% if volunteer.playa_name %}{{ volunteer.playa_name }}{% endif %},{{volunteer.phone }} ,{{volunteer.email}}<br>
+  {{ volunteer.first_name }},{{ volunteer.last_name }},{% if volunteer.playa_name %}{{ volunteer.playa_name }}{% endif %},{{volunteer.phone }},{{this_team}} 2015,{{volunteer.email}}<br>
   {% endfor %}">CSV Contact List</a>
 </div>
 {% endblock %}
