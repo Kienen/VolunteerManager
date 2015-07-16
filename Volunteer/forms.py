@@ -82,9 +82,9 @@ class RatingsForm(forms.Form):
 
         for team in teams:
             self.fields[team.name] = forms.ChoiceField(label=team.name, 
-                                                                 help_text=team.description, 
-                                                                 choices=tuple((x, x) for x in range(1,6)), 
-                                                                 widget=forms.RadioSelect(renderer=HorizRadioRenderer))
+                                                       help_text=team.description, 
+                                                       choices=tuple((x, x) for x in range(1,6)), 
+                                                       widget=forms.RadioSelect(renderer=HorizRadioRenderer))
 RatingsFormSet= modelformset_factory
 
 class VolunteerOfficeForm(forms.ModelForm):

@@ -216,8 +216,10 @@ def interest_view(request, team_arg):
     rating_list = Rating.objects.filter(team= this_team)
     rating_list = rating_list.filter(id__gt=3)
     volunteer_list = []
-    for rating in rating_list:
-        volunteer_list.append(rating.volunteer)
+    #for rating in rating_list:
+    #    volunteer_list.append(rating.volunteer)
+        
+    volunteer_list = [rating.volunteer for rating in rating_list if rating.volunteer.team == None]
     return render (request, "interested_list.html",  {'this_team': this_team,
                                                       'volunteer_list': volunteer_list,
                                                       })

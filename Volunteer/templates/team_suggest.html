@@ -8,7 +8,7 @@
 	<form method="POST" >{% csrf_token %}
 {% for volunteer in suggested_volunteer_list %}
 	<h3>{% include "volunteer_name.html" %}</h3>
-	{% if volunteer.approved_by %}<br>Approved by {{volunteer.approved_by}} {%endif%}
+	{% if volunteer.approved_by %}<br>Approved by {{volunteer.approved_by}}<br>{%endif%}
 <input type="radio" name="{{ volunteer.id }}" value="" checked>No Change
 <input type="radio" name="{{ volunteer.id }}" value="Accept">Accept
 <input type="radio" name="{{ volunteer.id }}" value="Reject">Reject
