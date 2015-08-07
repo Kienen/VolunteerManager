@@ -9,6 +9,10 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "VolunteerManager.settings")
 
 from django.core.wsgi import get_wsgi_application
-from dj_static import Cling
+from settings import location
 
-application = Cling(get_wsgi_application())
+if location==1:
+    application = get_wsgi_application()
+else:
+    from dj_static import Cling
+    application = Cling(get_wsgi_application())

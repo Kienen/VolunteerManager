@@ -5,13 +5,29 @@ https://docs.djangoproject.com/en/1.7/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
+
+# location=1 #'Local'
+# location=2 #'Staging'
+location=3 #'Production'
+
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
+MEDIA_ROOT = 'media'
+
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
+)
+
+
+STATICFILES_FINDERS = (
+
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 
@@ -21,11 +37,6 @@ STATICFILES_DIRS = (
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '3_%%8#6+dz4*mosz#k8!t8nv+47mau92$rcl2#!3e=c@+t21od'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-TEMPLATE_DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -46,6 +57,7 @@ INSTALLED_APPS = (
         #Copyright (c) 2007-2012, James Bennett
         #All rights reserved.
     'guardian',
+    'favicon',
     'django.contrib.sites',
     
     
@@ -78,14 +90,41 @@ ANONYMOUS_USER_ID = -1
 WSGI_APPLICATION = 'VolunteerManager.wsgi.application'
 
 
+
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 # Parse database configuration from $DATABASE_URL
-import dj_database_url
-DATABASES = {}
-#DATABASES['default'] =  dj_database_url.config()
-DATABASES['default'] = dj_database_url.config() 
-DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
+
+if location== 1: #Local
+    DEBUG = True
+    TEMPLATE_DEBUG = True
+    DATABASES = {
+         'default': {
+             'ENGINE': 'django.db.backends.mysql',
+             'NAME': 'djangostack',
+             'USER': 'root',
+             'PASSWORD': 'jolliko9',
+             'HOST': 'localhost',     
+             'PORT': '3306',
+         }
+    }
+    
+elif location== 2:  #Staging   
+    DEBUG = True
+    TEMPLATE_DEBUG = True
+    import dj_database_url
+    DATABASES = {}
+    DATABASES['default'] = dj_database_url.config() 
+    DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
+    
+elif location==3: #'production':
+    DEBUG = False
+    TEMPLATE_DEBUG = False
+    import dj_database_url
+    DATABASES = {}
+    DATABASES['default'] = dj_database_url.config() 
+    DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
+
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

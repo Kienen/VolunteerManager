@@ -1,0 +1,5 @@
+{% if this_team %}
+<a href="{% url 'Volunteer.views.volunteer_detail_view' this_team.id volunteer.id %}"<span class="lead">{{ volunteer.first_name }}{% if volunteer.playa_name %} "{{ volunteer.playa_name }}"{% endif %} {{ volunteer.last_name }}</span></a>
+{% else %}
+<a href="{% url 'Volunteer.views.volunteer_detail_view' volunteer.id %}"<span class="lead">{{ volunteer.first_name }}{% if volunteer.playa_name %} "{{ volunteer.playa_name }}"{% endif %} {{ volunteer.last_name }}</span></a>
+{%endif%}

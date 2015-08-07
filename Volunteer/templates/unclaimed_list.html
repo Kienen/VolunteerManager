@@ -1,0 +1,23 @@
+{% extends "staffbase.html" %}
+
+{% block content_title %} <h1>Unclaimed Volunteer List</h1> {% endblock %}
+
+{% block content %}
+<ul>
+	<form method="POST" >{% csrf_token %}
+{% for volunteer in volunteer_list %}
+	<h3>{% include "volunteer_name.html" %}</h3>
+	{% include "volunteer_info.html" %}
+{% empty %}
+    <li>No volunteers yet.</li>
+{% endfor %}
+</ul>
+
+</form> 
+
+
+
+{% endblock %}
+
+
+

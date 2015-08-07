@@ -36,7 +36,8 @@ $(document).ready(function() {
 	</div>
 
 	<div id="teamprefs">
-		<h4>Please indicate which teams you prefer to work with, with 1 as the lowest, and 10 as the highest.<br>
+
+		<h4>Please indicate which teams you prefer to work with, with 1 as the lowest, and 5 as the highest.<br>
 		Feel free to leave a section blank if you prefer.</h4>
 	   {% for field in form|slice:"3:" %}
     <div class="{{field.html_name}}">

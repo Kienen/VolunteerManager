@@ -1,0 +1,24 @@
+{% extends "staffbase.html" %}
+
+{% block content %}
+
+
+<form method="post">
+    {% csrf_token %}
+	<table>
+    	{% for rating in this_ratings %}
+		<tr><td>{{rating}}</td></tr>
+		{% endfor %}
+    {% for field in form %}
+        <div class="fieldWrapper">
+           <tr><td></td><td> {{ field.errors }}</td></tr>
+           <tr><td> {{ field.label_tag }}:</td><td> {{ field }}</td></tr>
+        </div>
+    {% endfor %}
+
+</form>
+	</table>
+    <input type="submit" value="Submit" />
+</form>
+
+{% endblock %}

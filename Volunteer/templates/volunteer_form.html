@@ -17,11 +17,11 @@ $(document).ready(function() {
 
 {% endblock %}
 {% block content %}
-Thank you very much for your interest in volunteering for YOUtopia 2015! 
-Our mutual participation as volunteers helps make YOUtopia the magical place it is. EVERYONE who attends YOUtopia volunteers in some way, whether by assisting their theme camp or helping a fellow participant. 
+<p>Thank you very much for your interest in volunteering for YOUtopia 2015! Our mutual participation as volunteers helps make YOUtopia the magical place it is. EVERYONE who attends YOUtopia volunteers in some way, whether by assisting their theme camp, helping fellow participants, building art, or contributing their talents to the event. </p>
 
-Please submit your application *only* if you are confident in your ability to commit to volunteering your helping hands and heart for the specific teams designated below for a total of between 16-20 hours. 
+<p>All participants are encouraged to come by the volunteer headquarters at the V Spot at any time to find a team of superheroes who need your help, but please submit this application *only* if you are confident in your ability to commit to volunteering your helping hands and heart for the specific teams designated below for a total of between 16-20 hours.</p> 
 
+<p>If you cannot commit to 16-20 hours of being incredibly awesome, please swing through the V Spot on site whenever you are able, contact us at volunteer@sdyoutopia.com, join us in the YOUtopia Volunteers Facebook group, or talk to a department head directly to find the best fit for your amazing talents. </p>
 
 <form action="" method="post">{% csrf_token %}
 	{{ form.non_field_errors }}
@@ -32,7 +32,7 @@ Please submit your application *only* if you are confident in your ability to co
 		{% elif field.name == 'vexp_other' %}{{ field.label_tag }}<br> {{ field }}  <br>{{ field.help_text }}
 		{% elif field.name == 'super_powers' %}{{ field.label_tag }}<br> {{ field }}  <br>{{ field.help_text }}
 		{% elif field.name == 'jokes' %}{{ field.label_tag }}<br> {{ field }}  <br>{{ field.help_text }}
-		{% elif field.name == 'ass' %}{{ field.label_tag }} {{ field }}  <br>{{ field.help_text }}
+		{% elif field.name == 'ass' %}{{ field }}{{ field.label_tag }}   <br>{{ field.help_text }}
         {% else %} {{ field.label_tag }} {{ field }}  {{ field.help_text }}
 		{% endif %}
     </div>
@@ -42,18 +42,24 @@ Please submit your application *only* if you are confident in your ability to co
 	{% for field in form|slice:"18:19" %}
     <div class="{{field.html_name}}{% if field.errors %} FieldError{%endif%}">
         {{ field.errors }}
-        {{ field.label_tag }} {{ field }} <br>  {{ field.help_text }}
+
+        {{ field }}{{ field.label_tag }}<br>{{ field.help_text }}
+
 
     </div>
 {% endfor %}
 <h3>Availability</h3>
+<p>All volunteers will be required to work at least two days during the event (Thurs-Sun) unless prior arrangements have been made with your department head. Greater availability will directly affect your chance to be selected for a volunteer position.</p>
+
+
    {% for field in form|slice:"19:" %}
     <div class="{{field.html_name}}">
         {{ field.errors }}
         {{ field.label_tag }} {{ field }}  {{ field.help_text }}
     </div>
 {% endfor %}
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Next</button>
+	Please continue to the next page to rate your desired teams.
 </form>
 
 {% endblock %} 

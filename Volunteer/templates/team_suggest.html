@@ -1,39 +1,19 @@
 {% extends "staffbase.html" %}
 
-{% block content_title %} <h1>{{ this_team }} Volunteer List</h1> {% endblock %}
+{% block content_title %} <h1>{{ this_team }} Suggested Volunteers</h1> {% endblock %}
 
 {% block content %}
 
-
-<h3>Suggested Volunteers</h3>
 <ul>
 	<form method="POST" >{% csrf_token %}
 {% for volunteer in suggested_volunteer_list %}
-	<li><h4>  {% if volunteer.playa_name %} "{{ volunteer.playa_name }}" : {% endif %} {{ volunteer.first_name }}  {{ volunteer.last_name }} </h4>
-
+	<h3>{% include "volunteer_name.html" %}</h3>
+	{% if volunteer.approved_by %}<br>Approved by {{volunteer.approved_by}}<br>{%endif%}
 <input type="radio" name="{{ volunteer.id }}" value="" checked>No Change
 <input type="radio" name="{{ volunteer.id }}" value="Accept">Accept
 <input type="radio" name="{{ volunteer.id }}" value="Reject">Reject
+	{% include "volunteer_info.html" %}
 
-
-	<ul>
-		<li>Birthdate: {{ volunteer.birthdate }}
-		<li>Disability: {{ volunteer.disability  }} </li>
-		<li>Attended a Burning Man event before? {{ volunteer.attended_BM }}</li>
-		{% if  volunteer.v_YOUtopia %} <li> YOUtopia Experience: </li> <p>{{volunteer.vexp_YOUtopia}} </p>{% endif %}
-		{% if volunteer.v_other %} <li> Other Festival Experience: </li> <p> volunteer.vexp_other </p>{% endif %}
-		<li>Super Powers:</li><p> {{ volunteer.super_powers }} </p>
-		<li>Comments: {{ volunteer.jokes }}</li>
-		<li>Notes: {{ volunteer.notes }} </li>
-		{% if volunteer.preferences2015.avail_tu %}<li>Available Tuesday, October 13th {% endif %}</li>
-		{% if volunteer.preferences2015.avail_w %}<li>Available Wednesday, October 14th {% endif %}</li>
-		{% if volunteer.preferences2015.avail_th %}<li>Available Thursday, October 15th {% endif %}</li>
-		{% if volunteer.preferences2015.avail_f %}<li>Available Friday, October 16th {% endif %}</li>
-		{% if volunteer.preferences2015.avail_sa %}<li>Available Saturday, October 17th {% endif %}</li>
-		{% if volunteer.preferences2015.avail_su %}<li>Available Sunday, October 18th {% endif %}</li>
-		{% if volunteer.preferences2015.avail_m %}<li>Available Monday, October 19th {% endif %}</li>
-
-	</ul></li>
 	
 {% empty %}
     <li>No volunteers yet.</li>

@@ -1,25 +1,36 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render, redirect#, get_or_create
-#from registration.backends.simple.views import RegistrationView
+
 from Volunteer.models import *
-from django.http import HttpResponse
-#from django.views.generic.edit import CreateView, UpdateView
-#from django.forms import ModelForm
-from guardian.shortcuts import get_objects_for_user
-#from django.contrib.auth.decorators import permission_required
-from django.contrib.auth.models import User, Group
-from guardian.shortcuts import assign_perm
-from django.contrib.auth.decorators import user_passes_test, permission_required
-#from django.views.generic.list import ListView
-#from django.forms.formsets import formset_factory
-from django.forms.models import modelformset_factory
 from Volunteer.forms import *
+from django.http import HttpResponse
+from django.contrib.auth import logout
+from django.contrib.auth.models import User, Group
+from django.contrib.auth.decorators import user_passes_test, permission_required
+from django.forms.models import modelformset_factory, inlineformset_factory
+from django.shortcuts import render, redirect
+from guardian.shortcuts import assign_perm, get_objects_for_user
 
 # Create your views here.
-#def islead(user)
-#    if useruser.groups.filter(name="leads").exists()
+def checklist(name="", phone="", email=""):
+    list_phone_numbers=['619-366-3665','619-663-8909','619-709-1463','858-775-1054','808-554-5589','619-990-2595','858-342-6634','614-316-5860','760-580-3840','714-450-0021','818-693-9114','858-412-9911','619-300-0181','530-240-5423','484-390-1447','801-674-6207','760-450-6093','562-212-2729','818-200-7771','818-425-1587','760-271-5617','858-705-0133','714-589-0121','805-886-6422','425-516-4920','626-627-3171','858-215-0056','949-228-7258','714-273-6664','714-681-8253','207-286-7905']
+    list_emails=['josephchamberlain194@gmail.com','Mrmeetupman@gmail.com','dj_alanb@hotmail.com','Savagedesignbeast@gmail.com','Awilding27@gmail.com','brjohnson1@gmail.com','medmiston42@gmail.com','p_wahlrab@yahoo.com','rhiannonbetancourt@gmail.com','don@norrisphoto.com','gunnar.poplawski@gmail.com','valentino.gantz@gmail.com','nakao2163@gmail.com','shieldsmoose@gmail.com','jeremyisshopping@gmail.com','Grhyse@gmail.com','splatgfx@gmail.com','Stevilace@Yahoo. com','sepulvedav@aol.com','mcshrader@gmail.com','genie13s@gmail.com','jinglesjacquelyn@gmail.com','codyavellon@gmail.com','joshlehet84@gmail.com','martinjeramy.a@gmail.com','melissacantstopthebeat@gmail.com','sheytoonak88@gmail.com','Djgwhat@gmail.com','Natashiagubec@me.com','meaton2755@yahoo.com']
+    list_names=['cody avellon','yasi balbas','rhiannon betancourt','alan blanchard','joseph chamberlain','gene rhyse davies','russel deeney','jason deyarmin','molly eaton','michael edmiston','donald norris fessman','valentino gantz','natashia gube','ben johnson','chris latall','josh lehet','jeramy martin','sydney mason','nathan nakao','tina-merrie newman','gunnar poplawski','steve roberts','melissa robertson','veronica sepulveda','rebecca shields moose','matthew shrader','georgene smith','pat wahlrab','j. sebastian wasser','james wasser','andrew wilding','jeremy wojciechowski','jacquelyn yauch']
+    
+    if name and name in list_names:
+        return True
+ 
+    if phone and phone in list_phone_numbers:
+        return True
 
+    if email and email in list_emails:
+        return True
+
+    return False
+    
 def volunteer_create(request):
+    #Redirect if user is a lead
+    if request.user.groups.filter(name='leads').exists():
+        return redirect ('/team/')
   # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -37,12 +48,13 @@ def volunteer_create(request):
                     profile.email = request.user.email
                 except:
                     profile.email = "No Email Available"
+                p_name= profile.first_name + " " + profile.last_name
+                p_name= p_name.lower()
+                if checklist(name=p_name, email=profile.email, phone= profile.phone):  
+                    profile.limbo= True
                 profile.save()
                 # redirect to a new URL:
-                if profile.approved:
-                    redirect ('/home/')
-                else:
-                    return redirect('/ratings')
+                return redirect('/ratings')
     # if a GET (or any other method) we'll create a blank form
     else:
         try:
@@ -54,20 +66,27 @@ def volunteer_create(request):
     return render(request, 'volunteer_form.html', {'form': list(form)})
  
 def rating(request):
-    teams = Team.objects.all()
-    volunteer = request.user.profile
+    #Redirect if user is lead or hasn't created a profile.
+    if request.user.groups.filter(name='leads').exists():
+        return redirect ('/team/')
+    try:
+        volunteer = request.user.profile
+    except:
+        redirect('/home/')
+        
+    teams = Team.objects.filter(visible= True)
+    teams = teams.exclude(name='Rangers')
   # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = RatingsForm(request.POST, teams= teams)
-        # check whether it's valid:
-            # process the data in form.cleaned_data as required
-            #preferences =  form.save(commit=False)
-            #preferences.volunteer = request.user.profile
-            #preferences.save()
+
         volunteer.ratings.clear()
-        if request.POST.get('approved') == 'True':
-            volunteer.suggested_team = preferences.approved_team
+
+        if form['approved'].value() == True:
+            #print form['approved_team'].value()
+            volunteer.suggested_team = Team.objects.get(name= form['approved_team'].value())
+            volunteer.approved_by = form['approved_by'].value()
         else:
             for team in Team.objects.all():
                 if request.POST.get(team.name):
@@ -78,7 +97,6 @@ def rating(request):
  
     # if a GET (or any other method) we'll create a blank form
     else:
-
         form = RatingsForm(teams= teams)
 
     return render(request, 'rating_form.html', {
@@ -94,10 +112,10 @@ def home(request):
         return redirect(volunteer_create)
 
 
-
 def go_profile(request):
     return redirect('/home/')
     
+#Team Views   
 @user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")    
 def team_choose(request):
     teams = get_objects_for_user(user=request.user, perms='Volunteer.change_team', klass=Team)
@@ -105,9 +123,8 @@ def team_choose(request):
     
 @user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")
 def team_view(request, team_arg):
-    team_id = int(team_arg)
     try:
-        this_team = Team.objects.get(id=team_id)
+        this_team = Team.objects.get(id= int(team_arg))
     except:
         return redirect('/team/')
     if not request.user.has_perm('Volunteer.change_team', this_team):  
@@ -137,12 +154,12 @@ def team_view(request, team_arg):
                                                     
 @user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")
 def suggest_view(request, team_arg):
-    team_id = int(team_arg)
     try:
-        this_team = Team.objects.get(id=team_id)
+        this_team = Team.objects.get(id=int(team_arg))
     except:
         return redirect('/team/')
-    suggested_volunteer_list = Volunteer.objects.filter(suggested_team = this_team)
+        
+    suggested_volunteer_list = Volunteer.objects.filter(suggested_team = this_team, limbo= False)
   # if this is a POST request we need to process the form data
     if request.method == 'POST':
         for volunteer in suggested_volunteer_list:
@@ -163,32 +180,54 @@ def suggest_view(request, team_arg):
                                                     'suggested_volunteer_list': suggested_volunteer_list,
                                                     })
  
- 
+@user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/") 
+def unclaimed_list(request, team_arg= None):
+    try:
+        this_team = Team.objects.get(id=int(team_arg))
+    except:
+        this_team = None
+        
+    volunteer_list = Volunteer.objects.filter(team__isnull = True, limbo= False)
+    return render (request, "unclaimed_list.html",  {'this_team': this_team,
+                                                    'volunteer_list': volunteer_list,
+                                                    })
+'''                                                    
 @user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")                                               
 def unclaimed_view(request):
-    VolunteerFormSet = modelformset_factory(Volunteer, form=ReadOnlyVolunteerSuggestForm, extra = 0)
-    #volunteer_list = Volunteer.objects.all()#filter(team__isnull = True)
   # if this is a POST request we need to process the form data
     if request.method == 'POST':
         formset = VolunteerFormSet(request.POST)
         if formset.is_valid():
-            print "saved"
             instances = formset.save()
-            return redirect ('/team/volunteers/')
-        else:
-            print 'unsaved'
+            return redirect ('views.unclaimed_list')
     # if a GET (or any other method) we'll create a blank form
     else:
-        formset = VolunteerFormSet(queryset=Volunteer.objects.filter(team__isnull = True))
+        formset = VolunteerFormSet(queryset=Volunteer.objects.filter(team__isnull = True, limbo= False))
     return render (request, "suggest.html",  {'formset':formset
                                                     })
-                                                    
-                                                    
+'''                                                    
+@user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")   
+def interest_view(request, team_arg):
+    try:
+        this_team = Team.objects.get(id=int(team_arg))
+    except:
+        return redirect('/team/')
+        
+    rating_list = Rating.objects.filter(team= this_team)
+    rating_list = rating_list.filter(id__gt=3)
+    volunteer_list = []
+    #for rating in rating_list:
+    #    volunteer_list.append(rating.volunteer)
+        
+    volunteer_list = [rating.volunteer for rating in rating_list if rating.volunteer.team == None]
+    return render (request, "interested_list.html",  {'this_team': this_team,
+                                                      'volunteer_list': volunteer_list,
+                                                      })
+                                                        
 @user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")                                              
 def email_view(request, team_arg):
-    team_id = int(team_arg)
     try:
-        this_team = Team.objects.get(id=team_id)
+        this_team = Team.objects.get(id= int(team_arg))
     except:
         return redirect('/team/')
     approved_volunteer_list = Volunteer.objects.filter(team=this_team)
@@ -209,7 +248,47 @@ def availability(request, team_arg):
                                                 'approved_volunteer_list': approved_volunteer_list,
                                                 })
 
-                                                
+@user_passes_test(lambda u: u.groups.filter(name='leads').exists(), login_url="/team/login/")    
+def volunteer_detail_view(request, vol_arg, team_arg= None):
+    try:
+        this_team = Team.objects.get(id=int(team_arg))
+    except:
+        this_team = None
+        
+    try:
+        vol_id = int(vol_arg)
+        volunteer= Volunteer.objects.get(id=vol_id)
+        this_ratings = Rating.objects.filter(volunteer=volunteer)
+    except:
+        if this_team:
+            return redirect (this_team.get_absolute_url() + '/volunteers/' )
+        else:
+            return redirect('/team/volunteers/')
+    
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = VolunteerMiniForm(request.POST, instance= volunteer)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            volunteer.save()
+            if this_team:
+                return redirect ('team_volunteer_detail', vol_arg=vol_arg, team_arg=team_arg )
+            else:
+                return redirect('volunteer_detail', vol_arg=vol_arg )
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = ReadOnlyVolunteerForm(instance= volunteer)
+        #formset = RatingsFormSet(instance= volunteer)
+        
+
+        
+    return render(request, 'volunteer_detail.html', {'form': form, 
+                                                     'this_ratings':this_ratings,
+                                                     'this_team': this_team, })
+
+'''                                                
 @permission_required('Volunteer.add_team')                                            
 def initialize(request):
     #from Volunteer.models import Team
@@ -290,7 +369,55 @@ def initialize(request):
     return HttpResponse('Initialize Successful!')
     
 
-
-
+@permission_required('Volunteer.add_team')    
+def passwordmassupdate(request):
+    PASS_DICT = {
+                'ada': 'mobilitymoproblems',
+                'wolfpack': 'barkatthemoon',
+                'temple': 'ccandthetemple',
+                'centercamp': 'ccandthetemple',
+                'cityplanning': 'citiesindust',
+                'transportation': 'dustytravels',
+                'please': 'feelgoodinc',
+                'fire': 'flareups',
+                'gate': 'giftedandtalentedentry',
+                'greeters': 'hugalicious',
+                'outreach': 'mediatwerkas',
+                'commissary': 'need2feed',
+                'playshops': 'playasgottaplay',
+                'roadwarriors': 'sirparksalot',
+                'moopgicians': 'sofreshsoclean',
+                'ticketing': 'willcallmemaybe',
+                'media': 'documazing',
+                'dispensary': 'allthethings',
+                'schwag': 'glitteringprizes',
+                'sales': 'coffeeteaorme',
+                'watergate': 'allthepresidentsmen',
+                'waldos': 'gottacatchemall',
+                }
     
+    updated_list = 'Updated:'
+    notupdated_list = 'Not Updated:'
+    (leadgroup, leadgroupcreated) = Group.objects.get_or_create(name='leads')
+    
+    for team in Team.objects.all():
+        this_name = team.name.replace(" ", "")
+        this_name = this_name.lower()
+        (lead, createdlead) = User.objects.get_or_create(username= this_name)
+        (newgroup,createdgroup) = Group.objects.get_or_create(name= this_name)
+        assign_perm('change_team', newgroup, team)
+        
+        leadgroup.user_set.add(lead)
+        leadgroup.save()    
+        
+        try: 
+            
+            lead.set_password(PASS_DICT[this_name])
+            lead.save()
 
+            updated_list= updated_list + " " + lead.username
+        except:
+            notupdated_list= notupdated_list + " " + lead.username
+            
+    return HttpResponse(updated_list + "\a" + notupdated_list)
+'''    

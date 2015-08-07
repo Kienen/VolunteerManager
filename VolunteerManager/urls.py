@@ -1,29 +1,37 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from registration.backends import simple
 from Volunteer import views
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required 
+from registration.backends import simple
 
 urlpatterns = patterns('',
-    
+    url(r'^', include('favicon.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^initialize/', views.initialize),
+
+    #url(r'^initialize/', views.initialize),
+    #url(r'^passupdate/', views.passwordmassupdate),
+
     
     #Team Leads
     url(r'^team/$', views.team_choose),
     url(r'^team/(?P<team_arg>\d{1,})/$', views.team_view),
-    url(r'^team/(?P<team_arg>\d{1,})/suggest$', views.suggest_view),
-    url(r'^team/(?P<team_arg>\d{1,})/email$', views.email_view),
-    url(r'^team/volunteers/$', views.unclaimed_view),
+    url(r'^team/(?P<team_arg>\d{1,})/suggest/$', views.suggest_view),
+    url(r'^team/(?P<team_arg>\d{1,})/email/$', views.email_view),
+    url(r'^team/(?P<team_arg>\d{1,})/volunteers/$', views.unclaimed_list, name='team_unclaimed_list'),
+    url(r'^team/(?P<team_arg>\d{1,})/volunteers/(?P<vol_arg>\d{1,})/$', views.volunteer_detail_view, name='team_volunteer_detail'),
+    url(r'^team/(?P<team_arg>\d{1,})/availability/$', views.availability),
+    url(r'^team/(?P<team_arg>\d{1,})/interested/$', views.interest_view),
+    
+    url(r'^team/volunteers/$', views.unclaimed_list, name='unclaimed_list'),
+    url(r'^team/volunteers/(?P<vol_arg>\d{1,})/$', views.volunteer_detail_view, name='volunteer_detail'),
     url(r'^team/login/$', 'django.contrib.auth.views.login', { 'template_name': 'team_login.html'}),
-    url(r'^team/(?P<team_arg>\d{1,})/availability$', views.availability),
- 
+
     
     #Volunteer Profiles
     url(r'^home/$', login_required(views.home)),
     url(r'^profile/$', login_required(views.volunteer_create)),
-    url(r'^ratings$', login_required(views.rating)),
+    url(r'^ratings/$', login_required(views.rating)),
     url(r'^password/$', auth_views.password_change),
     
 
@@ -31,7 +39,8 @@ urlpatterns = patterns('',
     url(r'^accounts/register/complete/$', views.volunteer_create),
     url(r'^accounts/', include('registration.backends.simple.urls')),
     url(r'^$', 'django.contrib.auth.views.login',  {'template_name': 'Volunteer/registration/login.html'}),
-    url(r'^logout/$', 'django.contrib.auth.views.logout'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
+
 
 
     #Password setting urls with built-in templates
